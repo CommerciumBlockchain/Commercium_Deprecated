@@ -1,0 +1,33 @@
+# /etc/conf.d/commerciumd: config file for /etc/init.d/commerciumd
+
+# Config file location
+#COMMERCIUMD_CONFIGFILE="/etc/commercium/commercium.conf"
+
+# What directory to write pidfile to?  (created and owned by $COMMERCIUMD_USER)
+#COMMERCIUMD_PIDDIR="/var/run/commerciumd"
+
+# What filename to give the pidfile
+#COMMERCIUMD_PIDFILE="${COMMERCIUMD_PIDDIR}/commerciumd.pid"
+
+# Where to write commerciumd data (be mindful that the blockchain is large)
+#COMMERCIUMD_DATADIR="/var/lib/commerciumd"
+
+# User and group to own commerciumd process
+#COMMERCIUMD_USER="commercium"
+#COMMERCIUMD_GROUP="commercium"
+
+# Path to commerciumd executable
+#COMMERCIUMD_BIN="/usr/bin/commerciumd"
+
+# Nice value to run commerciumd under
+#COMMERCIUMD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+COMMERCIUMD_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for commerciumd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+COMMERCIUMD_SIGTERM_TIMEOUT=60

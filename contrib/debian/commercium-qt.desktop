@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Commercium
+Comment=Connect to the Commercium P2P Network
+Comment[de]=Verbinde mit dem Commercium peer-to-peer Netzwerk
+Comment[fr]=Commercium, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Commercium, eşten eşe kriptografik sanal para birimi
+Exec=commercium-qt %u
+Terminal=false
+Type=Application
+Icon=commercium128
+MimeType=x-scheme-handler/commerciumcash;
+Categories=Office;Finance;

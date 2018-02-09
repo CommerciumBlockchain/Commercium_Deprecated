@@ -1,0 +1,6 @@
+usr/local/bin/commercium-qt usr/bin
+share/pixmaps/commercium32.xpm usr/share/pixmaps
+share/pixmaps/commercium16.xpm usr/share/pixmaps
+share/pixmaps/commercium128.png usr/share/pixmaps
+debian/commercium-qt.desktop usr/share/applications
+debian/commercium-qt.protocol usr/share/kde4/services/

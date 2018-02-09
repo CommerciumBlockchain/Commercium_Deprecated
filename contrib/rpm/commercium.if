@@ -1,0 +1,157 @@
+
+## <summary>policy for commercium</summary>
+
+
+########################################
+## <summary>
+##	Transition to commercium.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`commercium_domtrans',`
+	gen_require(`
+		type commercium_t, commercium_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, commercium_exec_t, commercium_t)
+')
+
+
+########################################
+## <summary>
+##	Execute commercium server in the commercium domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`commercium_initrc_domtrans',`
+	gen_require(`
+		type commercium_initrc_exec_t;
+	')
+
+	init_labeled_script_domtrans($1, commercium_initrc_exec_t)
+')
+
+
+########################################
+## <summary>
+##	Search commercium lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`commercium_search_lib',`
+	gen_require(`
+		type commercium_var_lib_t;
+	')
+
+	allow $1 commercium_var_lib_t:dir search_dir_perms;
+	files_search_var_lib($1)
+')
+
+########################################
+## <summary>
+##	Read commercium lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`commercium_read_lib_files',`
+	gen_require(`
+		type commercium_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	read_files_pattern($1, commercium_var_lib_t, commercium_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage commercium lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`commercium_manage_lib_files',`
+	gen_require(`
+		type commercium_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_files_pattern($1, commercium_var_lib_t, commercium_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage commercium lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`commercium_manage_lib_dirs',`
+	gen_require(`
+		type commercium_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, commercium_var_lib_t, commercium_var_lib_t)
+')
+
+
+########################################
+## <summary>
+##	All of the rules required to administrate
+##	an commercium environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`commercium_admin',`
+	gen_require(`
+		type commercium_t;
+		type commercium_initrc_exec_t;
+		type commercium_var_lib_t;
+	')
+
+	allow $1 commercium_t:process { ptrace signal_perms };
+	ps_process_pattern($1, commercium_t)
+
+	commercium_initrc_domtrans($1)
+	domain_system_change_exemption($1)
+	role_transition $2 commercium_initrc_exec_t system_r;
+	allow $2 system_r;
+
+	files_search_var_lib($1)
+	admin_pattern($1, commercium_var_lib_t)
+
+')
+

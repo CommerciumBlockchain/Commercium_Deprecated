@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/commercium/.commercium" ]; then
+	COMMERCIUMD_DEFAULT_DATADIR="/var/lib/commercium/.commercium"
+else
+	COMMERCIUMD_DEFAULT_DATADIR="/var/lib/commerciumd"
+fi
+
+COMMERCIUMD_CONFIGFILE=${COMMERCIUMD_CONFIGFILE:-/etc/commercium/commercium.conf}
+COMMERCIUMD_PIDDIR=${COMMERCIUMD_PIDDIR:-/var/run/commerciumd}
+COMMERCIUMD_PIDFILE=${COMMERCIUMD_PIDFILE:-${COMMERCIUMD_PIDDIR}/commerciumd.pid}
+COMMERCIUMD_DATADIR=${COMMERCIUMD_DATADIR:-${COMMERCIUMD_DEFAULT_DATADIR}}
+COMMERCIUMD_USER=${COMMERCIUMD_USER:-${COMMERCIUM_USER:-commercium}}
+COMMERCIUMD_GROUP=${COMMERCIUMD_GROUP:-commercium}
+COMMERCIUMD_BIN=${COMMERCIUMD_BIN:-/usr/bin/commerciumd}
+COMMERCIUMD_NICE=${COMMERCIUMD_NICE:-${NICELEVEL:-0}}
+COMMERCIUMD_OPTS="${COMMERCIUMD_OPTS:-${COMMERCIUM_OPTS}}"
+
+name="Commercium Daemon"
+description="Commercium cryptocurrency P2P network daemon"
+
+command="/usr/bin/commerciumd"
+command_args="-pid=\"${COMMERCIUMD_PIDFILE}\" \
+		-conf=\"${COMMERCIUMD_CONFIGFILE}\" \
+		-datadir=\"${COMMERCIUMD_DATADIR}\" \
+		-daemon \
+		${COMMERCIUMD_OPTS}"
+
+required_files="${COMMERCIUMD_CONFIGFILE}"
+start_stop_daemon_args="-u ${COMMERCIUMD_USER} \
+			-N ${COMMERCIUMD_NICE} -w 2000"
+pidfile="${COMMERCIUMD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${COMMERCIUMD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${COMMERCIUMD_USER}:${COMMERCIUMD_GROUP}" \
+	"${COMMERCIUMD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${COMMERCIUMD_USER}:${COMMERCIUMD_GROUP}" \
+	"${COMMERCIUMD_PIDDIR}"
+
+	checkpath -f \
+	-o ${COMMERCIUMD_USER}:${COMMERCIUMD_GROUP} \
+	-m 0660 \
+	${COMMERCIUMD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${COMMERCIUMD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run commerciumd."
+		eerror "The setting must appear in ${COMMERCIUMD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Commercium Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

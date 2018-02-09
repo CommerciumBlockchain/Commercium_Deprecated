@@ -1,0 +1,22 @@
+[Unit]
+Description=Commercium's distributed currency daemon
+After=network.target
+
+[Service]
+User=commercium
+Group=commercium
+
+Type=forking
+PIDFile=/var/lib/commerciumd/commerciumd.pid
+ExecStart=/usr/bin/commerciumd -daemon -pid=/var/lib/commerciumd/commerciumd.pid \
+-conf=/etc/commercium/commercium.conf -datadir=/var/lib/commerciumd -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

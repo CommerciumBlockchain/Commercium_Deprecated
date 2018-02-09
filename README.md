@@ -14,5 +14,3 @@ The purpose of
 Commercium (CMM) Features
 =====================================
 Features
-# Commercium
-# Commercium
