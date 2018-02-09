@@ -3,9 +3,8 @@ Commercium
 
 Setup
 ---------------------
-Commercium is a fork of Commercium Core, which is the original Commercium client and builds the backbone of the network. It downloads and stores the entire history of Commercium transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Commercium, visit [commercium.org](https://download.commercium.org/).
+To download Commercium, visit [commercium.net](https://commercium.netg/).
 
 Running
 ---------------------
@@ -28,7 +27,6 @@ Drag commercium to your applications folder, and then run commercium.
 
 ### Need Help?
 
-* See the documentation at the [Commercium Wiki](https://en.commercium.it/wiki/Main_Page)
 for help and more information.
 * Ask for help on the [Commercium Subreddit](https://www.reddit.com/r/Commercium/).
 
