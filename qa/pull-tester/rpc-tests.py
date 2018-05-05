@@ -103,6 +103,11 @@ if ENABLE_ZMQ:
         raise
 
 testScripts = [
+    # bitcore-support
+    'addressindex.py',
+    'timestampindex.py',
+    'spentindex.py',
+    'txindex.py',
     # longest test should go first, to favor running tests in parallel
     'wallet-hd.py',
     'walletbackup.py',

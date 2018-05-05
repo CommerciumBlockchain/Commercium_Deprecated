@@ -5,11 +5,11 @@ Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
 Source: https://github.com/CommerciumBlockchain/commercium
 
 Files: *
-Copyright: 2009-2017, Commercium Core Developers, 2017 Commercium Developers
+Copyright: 2009-2017, Bitcoin Core Developers, 2017 Bitcoin Developers
 License: Expat
-Comment: The Commercium Developers encompasses those contributing to Commercium
+Comment: The Commercium Developers encompasses those contributing to Bitcoin
          client open source development (various clients).
-         The Commercium Core Developers encompasses the current developers
+         The Bitcoin Core Developers encompasses the current developers
          listed on commercium.org, as well as the numerous contributors to
          the project.
 
