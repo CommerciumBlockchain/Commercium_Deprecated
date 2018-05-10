@@ -20,8 +20,8 @@ Summary:	Peer to Peer Cryptographic Currency
 
 Group:		Applications/System
 License:	MIT
-URL:		https://commercium.org/
-Source0:	https://commercium.org/bin/commercium-core-%{version}/commercium-%{version}.tar.gz
+URL:		https://commercium.net/
+Source0:	https://commercium.net/bin/commercium-core-%{version}/commercium-%{version}.tar.gz
 Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 
 Source10:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/contrib/debian/examples/commercium.conf

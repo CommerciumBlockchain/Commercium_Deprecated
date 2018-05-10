@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2012-2016 The Commercium Core developers
+// Copyright (c) 2012-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,26 +38,26 @@ public:
          * These values are taken from qmessagebox.h "enum StandardButton" to be
          * directly usable.
          */
-        CMM_OK = 0x00000400U,      // QMessageBox::Ok
-        CMM_YES = 0x00004000U,     // QMessageBox::Yes
-        CMM_NO = 0x00010000U,      // QMessageBox::No
-        CMM_ABORT = 0x00040000U,   // QMessageBox::Abort
-        CMM_RETRY = 0x00080000U,   // QMessageBox::Retry
-        CMM_IGNORE = 0x00100000U,  // QMessageBox::Ignore
-        CMM_CLOSE = 0x00200000U,   // QMessageBox::Close
-        CMM_CANCEL = 0x00400000U,  // QMessageBox::Cancel
-        CMM_DISCARD = 0x00800000U, // QMessageBox::Discard
-        CMM_HELP = 0x01000000U,    // QMessageBox::Help
-        CMM_APPLY = 0x02000000U,   // QMessageBox::Apply
-        CMM_RESET = 0x04000000U,   // QMessageBox::Reset
+        BTN_OK = 0x00000400U,      // QMessageBox::Ok
+        BTN_YES = 0x00004000U,     // QMessageBox::Yes
+        BTN_NO = 0x00010000U,      // QMessageBox::No
+        BTN_ABORT = 0x00040000U,   // QMessageBox::Abort
+        BTN_RETRY = 0x00080000U,   // QMessageBox::Retry
+        BTN_IGNORE = 0x00100000U,  // QMessageBox::Ignore
+        BTN_CLOSE = 0x00200000U,   // QMessageBox::Close
+        BTN_CANCEL = 0x00400000U,  // QMessageBox::Cancel
+        BTN_DISCARD = 0x00800000U, // QMessageBox::Discard
+        BTN_HELP = 0x01000000U,    // QMessageBox::Help
+        BTN_APPLY = 0x02000000U,   // QMessageBox::Apply
+        BTN_RESET = 0x04000000U,   // QMessageBox::Reset
 
         /**
          * Mask of all available buttons in CClientUIInterface::MessageBoxFlags
          * This needs to be updated, when buttons are changed there!
          */
-        CMM_MASK = (CMM_OK | CMM_YES | CMM_NO | CMM_ABORT | CMM_RETRY |
-                    CMM_IGNORE | CMM_CLOSE | CMM_CANCEL | CMM_DISCARD |
-                    CMM_HELP | CMM_APPLY | CMM_RESET),
+        BTN_MASK = (BTN_OK | BTN_YES | BTN_NO | BTN_ABORT | BTN_RETRY |
+                    BTN_IGNORE | BTN_CLOSE | BTN_CANCEL | BTN_DISCARD |
+                    BTN_HELP | BTN_APPLY | BTN_RESET),
 
         /**
          * Force blocking, modal message box dialog (not just OS notification)
@@ -69,8 +69,8 @@ public:
 
         /** Predefined combinations for certain default usage cases */
         MSG_INFORMATION = ICON_INFORMATION,
-        MSG_WARNING = (ICON_WARNING | CMM_OK | MODAL),
-        MSG_ERROR = (ICON_ERROR | CMM_OK | MODAL)
+        MSG_WARNING = (ICON_WARNING | BTN_OK | MODAL),
+        MSG_ERROR = (ICON_ERROR | BTN_OK | MODAL)
     };
 
     /** Show message box. */

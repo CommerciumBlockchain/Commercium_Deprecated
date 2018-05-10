@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,17 +13,17 @@ CommerciumUnits::CommerciumUnits(QObject *parent)
 
 QList<CommerciumUnits::Unit> CommerciumUnits::availableUnits() {
     QList<CommerciumUnits::Unit> unitlist;
-    unitlist.append(CMM);
-    unitlist.append(mCMM);
-    unitlist.append(uCMM);
+    unitlist.append(BTN);
+    unitlist.append(mBTN);
+    unitlist.append(uBTN);
     return unitlist;
 }
 
 bool CommerciumUnits::valid(int unit) {
     switch (unit) {
-        case CMM:
-        case mCMM:
-        case uCMM:
+        case BTN:
+        case mBTN:
+        case uBTN:
             return true;
         default:
             return false;
@@ -32,12 +32,12 @@ bool CommerciumUnits::valid(int unit) {
 
 QString CommerciumUnits::name(int unit) {
     switch (unit) {
-        case CMM:
-            return QString("CMM");
-        case mCMM:
-            return QString("mCMM");
-        case uCMM:
-            return QString::fromUtf8("μCMM");
+        case BTN:
+            return QString("BTN");
+        case mBTN:
+            return QString("mBTN");
+        case uBTN:
+            return QString::fromUtf8("μBTN");
         default:
             return QString("???");
     }
@@ -45,11 +45,11 @@ QString CommerciumUnits::name(int unit) {
 
 QString CommerciumUnits::description(int unit) {
     switch (unit) {
-        case CMM:
+        case BTN:
             return QString("Commerciums");
-        case mCMM:
+        case mBTN:
             return QString("Milli-Commerciums (1 / 1" THIN_SP_UTF8 "000)");
-        case uCMM:
+        case uBTN:
             return QString("Micro-Commerciums (1 / 1" THIN_SP_UTF8
                            "000" THIN_SP_UTF8 "000)");
         default:
@@ -59,11 +59,11 @@ QString CommerciumUnits::description(int unit) {
 
 qint64 CommerciumUnits::factor(int unit) {
     switch (unit) {
-        case CMM:
+        case BTN:
             return 100000000;
-        case mCMM:
+        case mBTN:
             return 100000;
-        case uCMM:
+        case uBTN:
             return 100;
         default:
             return 100000000;
@@ -72,11 +72,11 @@ qint64 CommerciumUnits::factor(int unit) {
 
 int CommerciumUnits::decimals(int unit) {
     switch (unit) {
-        case CMM:
+        case BTN:
             return 8;
-        case mCMM:
+        case mBTN:
             return 5;
-        case uCMM:
+        case uBTN:
             return 2;
         default:
             return 0;

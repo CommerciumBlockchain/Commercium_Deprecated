@@ -8,7 +8,7 @@ define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2017)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
 define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Commercium]])
-AC_INIT([Commercium],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/CommerciumBlockchain/commercium/issues],[commercium],[https://commercium.org/])
+AC_INIT([Commercium],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/Commercium/commercium/issues],[commercium],[https://commercium.net/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/commercium-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -317,9 +317,9 @@ AC_ARG_WITH([utils],
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],
-  [build libraries (default=no)])],
+  [build libraries (default=yes)])],
   [build_commercium_libs=$withval],
-  [build_commercium_libs=no])
+  [build_commercium_libs=yes])
 
 AC_ARG_WITH([daemon],
   [AS_HELP_STRING([--with-daemon],
@@ -714,6 +714,21 @@ if test x$use_upnp != xno; then
     [have_miniupnpc=no]
   )
 fi
+
+dnl Check to find the libsodium headers/libraries
+AC_CHECK_LIB(sodium, sodium_init,[],
+[AC_MSG_ERROR([The Sodium crypto library libraries not found.])]
+)
+
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#include <sodium.h>
+], [
+#if SODIUM_LIBRARY_VERSION_MAJOR < 9 || SODIUM_LIBRARY_VERSION_MAJOR == 9 && SODIUM_LIBRARY_VERSION_MINOR < 5
+# error
+#endif
+])],
+[AC_MSG_RESULT([checking for version of libsodium... yes])],
+[AC_MSG_ERROR([Wrong libsodium: version >= 1.0.13 required])])
 
 COMMERCIUM_QT_INIT
 

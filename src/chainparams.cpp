@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,7 +19,7 @@
 #include "chainparamsseeds.h"
 #include "pow/nano.h"
 
-// genesis
+// turn on to generate genesis
 //#define PRINTS_OUT
 
 #ifdef PRINTS_OUT
@@ -27,9 +27,9 @@
 using namespace std;
 
 void mery(CBlock *pblock, std::string net, int n, int k, std::string solver)
-{
+{ 
     ofstream fout; 
-    fout.open("/tmp/nano_genesis", std::fstream::in | std::fstream::out | std::fstream::app);
+    fout.open("/root/cmm_genesis", std::fstream::in | std::fstream::out | std::fstream::app);
     arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
 
     cout << "calculating net = " << net << ", n = " << n
@@ -42,8 +42,8 @@ void mery(CBlock *pblock, std::string net, int n, int k, std::string solver)
 
     while (true)
     {
-	    cout << "nonce = " << pblock->nNonce.ToString() << endl;
-		fout << "nonce = " << pblock->nNonce.ToString() << endl;
+	cout << "nonce = " << pblock->nNonce.ToString() << endl;
+	fout << "nonce = " << pblock->nNonce.ToString() << endl;
         if (equihash_(solver, pblock, n, k)) break;
         pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
     }
@@ -53,7 +53,7 @@ void mery(CBlock *pblock, std::string net, int n, int k, std::string solver)
     cout << pblock->ToString()<< endl;
     fout << pblock->ToString()<< endl;
 	
-	fout.close();
+    fout.close();
 }
 #endif
 
@@ -91,10 +91,10 @@ static CBlock CreateGenesisBlock(const char *pszTimestamp,
     genesis.nNonce = nNonce;
     genesis.nVersion = nVersion;
     genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
-	genesis.hashReserved.SetNull();
+    genesis.hashReserved.SetNull();
     genesis.hashPrevBlock.SetNull();
     genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-	genesis.nSolution = sol;
+    genesis.nSolution = sol;
     return genesis;
 }
 
@@ -107,7 +107,6 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce,
 			      "7492792c3aabef71c25523672e2c6e539bfce9e287eaa292eb1caec867f3"
 							  "97dff9ddf5fe7e207b523fc2c8bf96"
 							  "ada92cde96")
-
                   << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce,
                               nBits, nVersion, genesisReward, sol);
@@ -129,9 +128,9 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-//      consensus.nSubsidySlowStartInterval = 4370; // slow start mining in roughly a month
+//        consensus.nSubsidySlowStopInterval = 1260000; // slow start mining in roughly a month
 	consensus.nSubsidyHalvingInterval = 420000;
-        consensus.BIP34Height = 999999999;
+        consensus.BIP34Height = 9999999;
         consensus.BIP34Hash = uint256S("0x000478a689198ed6d7ef574d5a3f2b224ebe8f87507fa1bd40c61785bdf8d53c");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
@@ -190,15 +189,15 @@ public:
         pchMessageStart[1] = 0xad;
         pchMessageStart[2] = 0xbe;
         pchMessageStart[3] = 0xef;
-		pchCashMessageStart[1] = 0xde;
-        pchCashMessageStart[1] = 0xad;
-        pchCashMessageStart[2] = 0xbe;
-        pchCashMessageStart[3] = 0xef;						
+		pchCmmMessageStart[1] = 0xde;
+        pchCmmMessageStart[1] = 0xad;
+        pchCmmMessageStart[2] = 0xbe;
+        pchCmmMessageStart[3] = 0xef;						
 
         nDefaultPort = 2018;
         nPruneAfterHeight = 100000;
 
-		// Equihash params
+	// Equihash params
         const size_t N = 200, K = 9;
         BOOST_STATIC_ASSERT(equihash_parameters_acceptable(N, K));
         nEquihashN = N;
@@ -216,6 +215,7 @@ public:
         assert(genesis.hashMerkleRoot ==
                uint256S("0x1150d688019fcca73ab1136cc1ed51f41641b9919bbb22da571d2f755dc2cf99"));
 
+
         // Note that of those with the service bits flag, most only support a
         // subset of possible options.
         // Commercium seeder
@@ -230,12 +230,11 @@ public:
         vSeeds.push_back(
             CDNSSeedData("miningspeed.com", "comseeder.miningspeed.com", true));
 
-
 		// start with 'C'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 28);
 		// start with 'M'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<uint8_t>(1, 50);
-        // the first character, when base58 encoded, is "5" or "K" or "L" (as in Bitcoin)
+        // the first character, when base58 encoded, is "5" or "K" or "L" (as in Commercium)
         base58Prefixes[SECRET_KEY] = std::vector<uint8_t>(1, 140);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
@@ -263,6 +262,7 @@ public:
             0};
     }
 };
+
 static CMainParams mainParams;
 
 /**
@@ -330,10 +330,10 @@ public:
         pchMessageStart[1] = 0x12;
         pchMessageStart[2] = 0x09;
         pchMessageStart[3] = 0x07;
-        pchCashMessageStart[0] = 0xde;                                                                                                                                                                                                                                        
-        pchCashMessageStart[1] = 0x1e;
-        pchCashMessageStart[2] = 0xab;
-        pchCashMessageStart[3] = 0xcd;
+        pchCmmMessageStart[0] = 0xde;                                                                                                                                                                                                                                        
+        pchCmmMessageStart[1] = 0x1e;
+        pchCmmMessageStart[2] = 0xab;
+        pchCmmMessageStart[3] = 0xcd;
         nDefaultPort = 12018;
         nPruneAfterHeight = 1000;
 
@@ -446,10 +446,10 @@ public:
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xbe;
         pchMessageStart[3] = 0xda;
-        pchCashMessageStart[0] = 0xfd;                                                                                                                                                                                                                                        
-        pchCashMessageStart[1] = 0xbb;
-        pchCashMessageStart[2] = 0x5b;
-        pchCashMessageStart[3] = 0xde;
+        pchCmmMessageStart[0] = 0xfd;                                                                                                                                                                                                                                        
+        pchCmmMessageStart[1] = 0xbb;
+        pchCmmMessageStart[2] = 0x5b;
+        pchCmmMessageStart[3] = 0xde;
         nDefaultPort = 22018;
         nPruneAfterHeight = 1000;
 

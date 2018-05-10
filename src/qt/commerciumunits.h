@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -56,7 +56,7 @@ public:
      * @note Source: https://en.commercium.it/wiki/Units.
      * Please add only sensible ones.
      */
-    enum Unit { CMM, mCMM, uCMM };
+    enum Unit { BTN, mBTN, uBTN };
 
     enum SeparatorStyle { separatorNever, separatorStandard, separatorAlways };
 

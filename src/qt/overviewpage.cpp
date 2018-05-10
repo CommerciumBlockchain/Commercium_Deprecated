@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,7 +26,7 @@ class TxViewDelegate : public QAbstractItemDelegate {
 public:
     TxViewDelegate(const PlatformStyle *_platformStyle,
                    QObject *parent = nullptr)
-        : QAbstractItemDelegate(parent), unit(CommerciumUnits::CMM),
+        : QAbstractItemDelegate(parent), unit(CommerciumUnits::BTN),
           platformStyle(_platformStyle) {}
 
     inline void paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -264,7 +264,7 @@ void OverviewPage::setWalletModel(WalletModel *model) {
                 SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("CMM")
+    // update the display unit, to not use the default ("BTN")
     updateDisplayUnit();
 }
 

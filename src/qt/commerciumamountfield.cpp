@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The Commercium Core developers
+// Copyright (c) 2011-2015 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -23,7 +23,7 @@ class AmountSpinBox : public QAbstractSpinBox {
 
 public:
     explicit AmountSpinBox(QWidget *parent)
-        : QAbstractSpinBox(parent), currentUnit(CommerciumUnits::CMM),
+        : QAbstractSpinBox(parent), currentUnit(CommerciumUnits::BTN),
           singleStep(100000 /* satoshis */) {
         setAlignment(Qt::AlignRight);
 
@@ -89,7 +89,7 @@ public:
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
             int w = fm.width(CommerciumUnits::format(
-                CommerciumUnits::CMM, CommerciumUnits::maxMoney(), false,
+                CommerciumUnits::BTN, CommerciumUnits::maxMoney(), false,
                 CommerciumUnits::separatorAlways));
             // Cursor blinking space.
             w += 2;

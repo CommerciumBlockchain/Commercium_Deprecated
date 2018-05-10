@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium Core developers
+# Copyright (c) 2014-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -66,7 +66,7 @@ class BIP68Test(CommerciumTestFramework):
     def test_disable_flag(self):
         # Create some unconfirmed inputs
         new_addr = self.nodes[0].getnewaddress()
-        self.nodes[0].sendtoaddress(new_addr, 2)  # send 2 CMM
+        self.nodes[0].sendtoaddress(new_addr, 2)  # send 2 BTN
 
         utxos = self.nodes[0].listunspent(0, 0)
         assert(len(utxos) > 0)

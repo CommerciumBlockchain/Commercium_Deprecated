@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,7 +17,7 @@
 //! requires it
 #define CLIENT_VERSION_MAJOR 0
 #define CLIENT_VERSION_MINOR 15
-#define CLIENT_VERSION_REVISION 1
+#define CLIENT_VERSION_REVISION 2
 #define CLIENT_VERSION_BUILD 0
 
 //! Set to true for release, false for prerelease or test build

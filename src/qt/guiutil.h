@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -46,7 +46,7 @@ QFont fixedPitchFont();
 void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent);
 void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
-// Parse "commerciumcash:" URI into recipient object, return true on successful
+// Parse "commercium:" URI into recipient object, return true on successful
 // parsing
 bool parseCommerciumURI(const QUrl &uri, SendCoinsRecipient *out);
 bool parseCommerciumURI(QString uri, SendCoinsRecipient *out);

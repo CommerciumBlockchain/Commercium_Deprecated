@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(util_ParseMoney) {
 
 BOOST_AUTO_TEST_CASE(util_IsHex) {
     BOOST_CHECK(IsHex("00"));
-    BOOST_CHECK(IsHex("00112233445566778899aabbccddeeffAABCMMDDEEFF"));
+    BOOST_CHECK(IsHex("00112233445566778899aabbccddeeffAABBTNDDEEFF"));
     BOOST_CHECK(IsHex("ff"));
     BOOST_CHECK(IsHex("FF"));
 

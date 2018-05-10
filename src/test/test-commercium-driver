@@ -112,8 +112,8 @@ trap "st=143; $do_exit" 15
 set +u 
 if [ -n "$TRAVIS_NOHANG_WORKAROUND" ]; then
 # TRAVIS WORKAROUND -- TODO: remove when issue is resolved!
-# See: http://reviews.commercium.org/T44
-#      http://reviews.commercium.org/D497
+# See: http://reviews.commercium.net/T44
+#      http://reviews.commercium.net/D497
 #
 # Basically for MinGW/Win32 builds test_commercium sometimes
 # takes *forever* to run without producing any output.

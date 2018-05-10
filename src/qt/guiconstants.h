@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -49,7 +49,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Commercium"
-#define QAPP_ORG_DOMAIN "commercium.org"
+#define QAPP_ORG_DOMAIN "commercium.net"
 #define QAPP_APP_NAME_DEFAULT "Commercium-Qt"
 #define QAPP_APP_NAME_TESTNET "Commercium-Qt-testnet"
 

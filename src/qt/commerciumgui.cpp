@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -968,7 +968,7 @@ void CommerciumGUI::message(const QString &title, const QString &message,
         // Check for buttons, use OK as default, if none was supplied
         QMessageBox::StandardButton buttons;
         if (!(buttons = (QMessageBox::StandardButton)(
-                  style & CClientUIInterface::CMM_MASK)))
+                  style & CClientUIInterface::BTN_MASK)))
             buttons = QMessageBox::Ok;
 
         showNormalIfMinimized();

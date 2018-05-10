@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -73,13 +73,14 @@ public:
         return Amount(a * b.amount);
     }
     // DO NOT IMPLEMENT
+
     friend Amount operator*(const double a, const Amount b) = delete;
     int64_t operator/(const Amount b) const { return amount / b.amount; }
     Amount operator/(const int64_t b) const { return Amount(amount / b); }
     Amount operator/(const int b) const { return Amount(amount / b); }
     // DO NOT IMPLEMENT
     Amount operator/(const double b) const = delete;
-
+   
     // ostream support
     friend std::ostream &operator<<(std::ostream &stream, const Amount &ca) {
         return stream << ca.amount;
@@ -107,7 +108,7 @@ extern const std::string CURRENCY_UNIT;
  * No amount larger than this (in satoshi) is valid.
  *
  * Note that this constant is *not* the total money supply, which in Commercium
- * currently happens to be less than 21,000,000 CMM for various reasons, but
+ * currently happens to be less than 21,000,000 BTN for various reasons, but
  * rather a sanity check. As this sanity check is used by consensus-critical
  * validation code, the exact value of the MAX_MONEY constant is consensus
  * critical; in unusual circumstances like a(nother) overflow bug that allowed

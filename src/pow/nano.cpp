@@ -1,3 +1,7 @@
+// Copyright (c) 2017-2018 The Commercium developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #include "miner.h"
 #include "arith_uint256.h"
 #include "pow/tromp/equi_miner.h"
@@ -12,6 +16,7 @@
 #include "arith_uint256.h"
 #include <fstream>
 
+// partly copied from https://github.com/zcash/zcash/blob/master/src/miner.cpp#L581
 bool equihash_(std::string solver, CBlock *pblock, int n, int k)
 {
     arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
@@ -49,7 +54,7 @@ bool equihash_(std::string solver, CBlock *pblock, int n, int k)
         }
 
         // Found a solution
-        LogPrintf("CmmMiner:\n");
+        LogPrintf("NanoMiner:\n");
         LogPrintf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", pblock->GetHash().GetHex(), hashTarget.GetHex());
         return true;
     };
