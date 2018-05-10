@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -587,6 +587,8 @@ public:
      */
     unsigned int GetSigOpCount(const CScript &scriptSig) const;
 
+    bool IsPayToPublicKeyHash() const;
+    
     bool IsPayToScriptHash() const;
     bool IsPayToWitnessScriptHash() const;
     bool IsCommitment(const std::vector<uint8_t> &data) const;

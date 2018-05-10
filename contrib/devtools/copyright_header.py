@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The Commercium Core developers
-# Copyright (c) 2017 The Commercium developers
+# Copyright (c) 2016 The Bitcoin Core developers
+# Copyright (c) 2017 The Bitcoin developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -84,11 +84,11 @@ def compile_copyright_regex(copyright_style, year_style, name):
 
 EXPECTED_HOLDER_NAMES = [
     "Satoshi Nakamoto\n",
-    "The Commercium Core developers\n",
-    "The Commercium Core developers \n",
-    "Commercium Core Developers\n",
-    "the Commercium Core developers\n",
-    "The Commercium developers\n",
+    "The Bitcoin Core developers\n",
+    "The Bitcoin Core developers \n",
+    "Bitcoin Core Developers\n",
+    "the Bitcoin Core developers\n",
+    "The Bitcoin developers\n",
     "The LevelDB Authors\. All rights reserved\.\n",
     "BitPay Inc\.\n",
     "BitPay, Inc\.\n",

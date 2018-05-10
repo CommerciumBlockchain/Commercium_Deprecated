@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 The Commercium Core developers
+// Copyright (c) 2014-2016 The Bitcore Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -208,31 +208,6 @@ int CBase58Data::CompareTo(const CBase58Data &b58) const {
 }
 
 namespace {
-/**
- * base58-encoded Commercium addresses.
- * Public-key-hash-addresses have version 0 (or 111 testnet).
- * The data vector contains RIPEMD160(SHA256(pubkey)), where pubkey is the
- * serialized public key.
- * Script-hash-addresses have version 5 (or 196 testnet).
- * The data vector contains RIPEMD160(SHA256(cscript)), where cscript is the
- * serialized redemption script.
- */
-class CCommerciumAddress : public CBase58Data {
-public:
-    bool Set(const CKeyID &id);
-    bool Set(const CScriptID &id);
-    bool Set(const CTxDestination &dest);
-    bool IsValid() const;
-    bool IsValid(const CChainParams &params) const;
-
-    CCommerciumAddress() {}
-    CCommerciumAddress(const CTxDestination &dest) { Set(dest); }
-    CCommerciumAddress(const std::string &strAddress) { SetString(strAddress); }
-    CCommerciumAddress(const char *pszAddress) { SetString(pszAddress); }
-
-    CTxDestination Get() const;
-};
-
 class CCommerciumAddressVisitor : public boost::static_visitor<bool> {
 private:
     CCommerciumAddress *addr;
@@ -285,6 +260,23 @@ CTxDestination CCommerciumAddress::Get() const {
     } else {
         return CNoDestination();
     }
+}
+
+bool CCommerciumAddress::GetIndexKey(uint160& hashBytes, int& type) const
+{
+    if (!IsValid()) {
+        return false;
+    } else if (vchVersion == Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS)) {
+        memcpy(&hashBytes, &vchData[0], 20);
+        type = 1;
+        return true;
+    } else if (vchVersion == Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS)) {
+        memcpy(&hashBytes, &vchData[0], 20);
+        type = 2;
+        return true;
+    }
+
+    return false;
 }
 
 void CCommerciumSecret::SetKey(const CKey &vchSecret) {
