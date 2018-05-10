@@ -10,7 +10,7 @@ import random
 import re
 from test_framework.test_framework import CommerciumTestFramework
 from test_framework.util import *
-from test_framework.mininode import NODE_COMMERCIUM_NANO
+from test_framework.mininode import NODE_COMMERCIUM_CASH
 from test_framework.cdefs import (ONE_MEGABYTE,
                                   LEGACY_MAX_BLOCK_SIZE,
                                   DEFAULT_MAX_BLOCK_SIZE)
@@ -83,12 +83,12 @@ class ABC_RPC_Test (CommerciumTestFramework):
         self.check_subversion("/Commercium:.*\(EB13\.1; .*\)/")
 
     def test_cashservicebit(self):
-        # Check that NODE_COMMERCIUM_NANO bit is set.
+        # Check that NODE_COMMERCIUM_CASH bit is set.
         # This can be seen in the 'localservices' entry of getnetworkinfo RPC.
         node = self.nodes[0]
         nw_info = node.getnetworkinfo()
-        assert_equal(int(nw_info['localservices'], 16) & NODE_COMMERCIUM_NANO,
-                     NODE_COMMERCIUM_NANO)
+        assert_equal(int(nw_info['localservices'], 16) & NODE_COMMERCIUM_CASH,
+                     NODE_COMMERCIUM_CASH)
 
     def run_test(self):
         self.genesis_hash = int(self.nodes[0].getbestblockhash(), 16)

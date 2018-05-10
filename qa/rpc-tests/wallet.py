@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium developers
+# Copyright (c) 2014-2016 The Commercium Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -57,7 +57,7 @@ class WalletTest (CommerciumTestFramework):
         assert_equal(len(self.nodes[1].listunspent()), 1)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        # Send 21 BTN from 0 to 2 using sendtoaddress call.
+        # Send 21 CMM from 0 to 2 using sendtoaddress call.
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11)
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 10)
 
@@ -116,7 +116,7 @@ class WalletTest (CommerciumTestFramework):
         assert_equal(self.nodes[2].getbalance(), 94)
         assert_equal(self.nodes[2].getbalance("from1"), 94 - 21)
 
-        # Send 10 BTN normal
+        # Send 10 CMM normal
         address = self.nodes[0].getnewaddress("test")
         fee_per_byte = Decimal('0.001') / 1000
         self.nodes[2].settxfee(fee_per_byte * 1000)
@@ -127,7 +127,7 @@ class WalletTest (CommerciumTestFramework):
             '84'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), Decimal('10'))
 
-        # Send 10 BTN with subtract fee from amount
+        # Send 10 CMM with subtract fee from amount
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", True)
         self.nodes[2].generate(1)
         self.sync_all()
@@ -136,7 +136,7 @@ class WalletTest (CommerciumTestFramework):
         node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), Decimal(
             '20'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
 
-        # Sendmany 10 BTN
+        # Sendmany 10 CMM
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [])
         self.nodes[2].generate(1)
         self.sync_all()
@@ -145,7 +145,7 @@ class WalletTest (CommerciumTestFramework):
             '10'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), node_0_bal)
 
-        # Sendmany 10 BTN with subtract fee from amount
+        # Sendmany 10 CMM with subtract fee from amount
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [address])
         self.nodes[2].generate(1)
         self.sync_all()

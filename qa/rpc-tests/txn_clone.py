@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium developers
+# Copyright (c) 2014-2016 The Commercium Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -30,7 +30,7 @@ class TxnMallTest(CommerciumTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 1,250 BTN:
+        # All nodes should start with 1,250 CMM:
         starting_balance = 1250
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -71,7 +71,7 @@ class TxnMallTest(CommerciumTestFramework):
 
         # createrawtransaction randomizes the order of its outputs, so swap them if necessary.
         # output 0 is at version+#inputs+input+sigstub+sequence+#outputs
-        # 40 BTN serialized is 00286bee00000000
+        # 40 CMM serialized is 00286bee00000000
         pos0 = 2 * (4 + 1 + 36 + 1 + 4 + 1)
         hex40 = "00286bee00000000"
         output_len = 16 + 2 + 2 * \
@@ -97,7 +97,7 @@ class TxnMallTest(CommerciumTestFramework):
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
-        # Node0's balance should be starting balance, plus 50BTN for another
+        # Node0's balance should be starting balance, plus 50CMM for another
         # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + fund_foo_tx["fee"] + fund_bar_tx["fee"]
         if self.options.mine_block:
@@ -145,7 +145,7 @@ class TxnMallTest(CommerciumTestFramework):
         assert_equal(tx1_clone["confirmations"], 2)
         assert_equal(tx2["confirmations"], 1)
 
-        # Check node0's total balance; should be same as before the clone, + 100 BTN for 2 matured,
+        # Check node0's total balance; should be same as before the clone, + 100 CMM for 2 matured,
         # less possible orphaned matured subsidy
         expected += 100
         if (self.options.mine_block):

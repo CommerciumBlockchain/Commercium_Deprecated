@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium developers
+# Copyright (c) 2014-2016 The Commercium Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -115,7 +115,7 @@ def rpc_port(n):
 
 
 def check_json_precision():
-    """Make sure json library being used does not lose precision converting BTN values"""
+    """Make sure json library being used does not lose precision converting CMM values"""
     n = Decimal("20000000.00000003")
     satoshis = int(json.loads(json.dumps(float(n))) * 1.0e8)
     if satoshis != 2000000000000003:
@@ -619,11 +619,11 @@ def assert_fee_amount(fee, tx_size, fee_per_kB):
     target_fee = tx_size * fee_per_kB / 1000
     if fee < target_fee:
         raise AssertionError(
-            "Fee of %s BTN too low! (Should be %s BTN)" % (str(fee), str(target_fee)))
+            "Fee of %s CMM too low! (Should be %s CMM)" % (str(fee), str(target_fee)))
     # allow the wallet's estimation to be at most 2 bytes off
     if fee > (tx_size + 2) * fee_per_kB / 1000:
         raise AssertionError(
-            "Fee of %s BTN too high! (Should be %s BTN)" % (str(fee), str(target_fee)))
+            "Fee of %s CMM too high! (Should be %s CMM)" % (str(fee), str(target_fee)))
 
 
 def assert_equal(thing1, thing2, *args):
