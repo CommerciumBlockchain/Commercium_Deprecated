@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Btcnano Core developers
-// Copyright (c) 2017 The Btcnano developers
+// Copyright (c) 2009-2016 The Commercium developers
+// Copyright (c) 2017 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -51,8 +51,11 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-#error "Btcnano cannot be compiled without assertions."
+#error "Commercium cannot be compiled without assertions."
 #endif
+
+#include <iostream>
+using namespace std;
 
 /**
  * Global state
@@ -91,7 +94,7 @@ static void CheckBlockIndex(const Consensus::Params &consensusParams);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Btcnano Signed Message:\n";
+const std::string strMessageMagic = "Commercium Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1167,10 +1170,34 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params &consensusParams)
         return 10000000 * COIN.GetSatoshis();
 
     CAmount nSubsidy = 32 * COIN.GetSatoshis();
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // Subsidy is cut in half every 420,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
     return nSubsidy;
 }
+
+/*
+    // Mining slow stop
+	const int val = consensusParams.nSubsidySlowStopInterval;
+	if (nHeight > val)
+	{
+		if (nHeight > 1260000)
+		{
+			nSubsidy >>= 2;
+		}
+
+		// for compliance of previously generated block.
+		nSubsidy /= val;
+		if (nHeight < val / 2) nSubsidy *= nHeight;
+		else nSubsidy *= (nHeight + 1);
+		return nSubsidy;
+	}
+
+	int halvings = (nHeight - 501888) / consensusParams.nSubsidyHalvingInterval;
+	// Force block reward to zero when right shift is undefined.
+	if (halvings >= 64) return 0;
+}
+*/
+
 
 bool IsInitialBlockDownload() {
     const CChainParams &chainParams = Params();
@@ -1735,7 +1762,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos,
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("btcnano-scriptch");
+    RenameThread("commercium-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -3174,7 +3201,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos,
 
     return true;
 }
-/*
+
 bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
                       const Consensus::Params &consensusParams,
                       bool fCheckPOW) {
@@ -3192,29 +3219,6 @@ bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
 
     return true;
 }
-*/
-//Error with ban on invalid invalid solution check.
-bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
-                      const Consensus::Params &consensusParams,
-                      bool fCheckPOW) {
-        // Check Equihash solution
-        if (fCheckPOW &&
-                !CheckEquihashSolution(&block, Params()))
-                return state.DoS(0, error("CheckBlockHeader(): Equihash solution invalid"),
-                         REJECT_INVALID, "invalid-solution");
-
-    // Check proof of work matches claimed amount
-    if (fCheckPOW &&
-        !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
-        return state.DoS(0, false, REJECT_INVALID, "high-hash", false,
-                         "proof of work failed");
-
-    return true;
-}
-
-
-
-
 
 bool CheckBlock(const Config &config, const CBlock &block,
                 CValidationState &state,
@@ -3519,7 +3523,13 @@ static bool AcceptBlockHeader(const Config &config, const CBlockHeader &block,
         }
 
         if (!CheckBlockHeader(block, state, chainparams.GetConsensus())) {
-            return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__,
+/*			
+			cout << "nBits = " << block.nBits << ", nNonce = " << block.nNonce.ToString()
+				 << ", time = " << block.nTime << ", hash = " << block.GetHash().ToString() << ", prehash = "
+				 << block.hashPrevBlock.ToString() << endl; 
+			LogPrintf("bits = %d, nNonce=%s, time=%d, hash=%s, prehash=%s\n", block.nBits, block.nNonce.ToString(), 
+						block.nTime, block.GetHash().ToString(), block.hashPrevBlock.ToString());
+*/            return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__,
                          hash.ToString(), FormatStateMessage(state));
         }
 

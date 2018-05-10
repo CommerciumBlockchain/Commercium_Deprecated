@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -33,7 +33,7 @@
  * \section intro_sec Introduction
  *
  * This is the developer documentation of the reference client for an
- * experimental new digital currency called Commercium (https://www.commercium.org/),
+ * experimental new digital currency called Commercium (https://www.commercium.net/),
  * which enables instant payments to anyone, anywhere in the world. Commercium uses
  * peer-to-peer technology to operate with no central authority: managing
  * transactions and issuing money are carried out collectively by the network.

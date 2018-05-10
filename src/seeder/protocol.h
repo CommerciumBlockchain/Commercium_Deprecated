@@ -64,14 +64,14 @@ enum ServiceFlags : uint64_t {
     NODE_NETWORK = (1 << 0),
     NODE_BLOOM = (1 << 2),
     NODE_XTHIN = (1 << 4),
-    NODE_COMMERCIUM_CASH = (1 << 5),
+    NODE_COMMERCIUM = (1 << 5),
 };
 
 class CAddress : public CService {
 public:
     CAddress();
     CAddress(CService ipIn,
-             uint64_t nServicesIn = NODE_NETWORK | NODE_COMMERCIUM_CASH);
+             uint64_t nServicesIn = NODE_NETWORK | NODE_COMMERCIUM);
 
     void Init();
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium Core developers
+// Copyright (c) 2011-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -503,7 +503,7 @@ void CommerciumApplication::initializeResult(int retval) {
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // commerciumcash: URIs or payment requests:
+        // commercium: URIs or payment requests:
         connect(paymentServer,
                 SIGNAL(receivedPaymentRequest(SendCoinsRecipient)), window,
                 SLOT(handlePaymentRequest(SendCoinsRecipient)));
@@ -550,7 +550,7 @@ static void MigrateSettings() {
         // Macs and/or iOS et al use a domain-style name for Settings
         // files. All other platforms use a simple orgname. This
         // difference is documented in the QSettings class documentation.
-        legacyOrg("commercium.org");
+        legacyOrg("commercium.net");
 #else
         legacyOrg("Commercium");
 #endif
@@ -569,7 +569,7 @@ static void MigrateSettings() {
 #endif
     const QStringList legacyKeys(legacy.allKeys());
 
-    // We only migrate settings if we have Core settings but no CommerciumBlockchain
+    // We only migrate settings if we have Core settings but no Commercium
     // settings
     if (!legacyKeys.isEmpty() && abc.allKeys().isEmpty()) {
         for (const QString &key : legacyKeys) {
@@ -734,7 +734,7 @@ int main(int argc, char *argv[]) {
     if (PaymentServer::ipcSendCommandLine()) exit(EXIT_SUCCESS);
 
     // Start up the payment server early, too, so impatient users that click on
-    // commerciumcash: links repeatedly have their payment requests routed to this
+    // commercium: links repeatedly have their payment requests routed to this
     // process:
     app.createPaymentServer();
 #endif

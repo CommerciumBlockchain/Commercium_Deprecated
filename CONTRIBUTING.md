@@ -3,7 +3,7 @@ Contributing to Commercium
 
 The Commercium project welcomes contributors!
 
-To contribute, sign up at: https://reviews.commercium.org/
+To contribute, sign up at: https://reviews.commercium.net/
 
 
 Copyright

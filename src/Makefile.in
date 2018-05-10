@@ -14,27 +14,27 @@
 
 @SET_MAKE@
 
-# Copyright (c) 2013-2016 The Commercium Core developers
+# Copyright (c) 2013-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Copyright (c) 2016 The Commercium Core developers
+# Copyright (c) 2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Copyright (c) 2013-2016 The Commercium Core developers
+# Copyright (c) 2013-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Copyright (c) 2015-2016 The Commercium Core developers
+# Copyright (c) 2015-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Copyright (c) 2013-2016 The Commercium Core developers
+# Copyright (c) 2013-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Copyright (c) 2013-2016 The Commercium Core developers
+# Copyright (c) 2013-2016 The Commercium developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -853,10 +853,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
 @BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_DEPENDENCIES =  \
-@BUILD_COMMERCIUM_LIBS_TRUE@	$(LIBSECP256K1) \
-@BUILD_COMMERCIUM_LIBS_TRUE@	$(am__DEPENDENCIES_1)
+@BUILD_COMMERCIUM_LIBS_TRUE@	$(LIBSECP256K1)
 am__libcommerciumconsensus_la_SOURCES_DIST = crypto/aes.cpp \
 	crypto/aes.h crypto/chacha20.h crypto/chacha20.cpp \
 	crypto/common.h crypto/hmac_sha256.cpp crypto/hmac_sha256.h \
@@ -962,27 +960,28 @@ am__bench_bench_commercium_SOURCES_DIST = bench/bench_commercium.cpp \
 @ENABLE_BENCH_TRUE@	$(am__objects_23)
 bench_bench_commercium_OBJECTS = $(am_bench_bench_commercium_OBJECTS) \
 	$(nodist_bench_bench_commercium_OBJECTS)
-am__DEPENDENCIES_2 = $(am__append_12)
-am__DEPENDENCIES_3 = $(am__append_13)
-@EMBEDDED_UNIVALUE_FALSE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_1 = $(am__append_12)
+am__DEPENDENCIES_2 = $(am__append_13)
+am__DEPENDENCIES_3 =
+@EMBEDDED_UNIVALUE_FALSE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3)
 @EMBEDDED_UNIVALUE_TRUE@am__DEPENDENCIES_4 = univalue/libunivalue.la
 @ENABLE_BENCH_TRUE@@ENABLE_ZMQ_TRUE@am__DEPENDENCIES_5 =  \
 @ENABLE_BENCH_TRUE@@ENABLE_ZMQ_TRUE@	$(LIBCOMMERCIUM_ZMQ) \
-@ENABLE_BENCH_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_BENCH_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_3)
 @ENABLE_BENCH_TRUE@bench_bench_commercium_DEPENDENCIES =  \
 @ENABLE_BENCH_TRUE@	$(LIBCOMMERCIUM_SERVER) \
 @ENABLE_BENCH_TRUE@	$(LIBCOMMERCIUM_COMMON) \
 @ENABLE_BENCH_TRUE@	$(LIBCOMMERCIUM_UTIL) \
 @ENABLE_BENCH_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
 @ENABLE_BENCH_TRUE@	$(LIBCOMMERCIUM_CRYPTO) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_2) $(LIBLEVELDB_SSE42) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_3) $(LIBSECP256K1) \
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_1) $(LIBLEVELDB_SSE42) \
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_2) $(LIBSECP256K1) \
 @ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
 @ENABLE_BENCH_TRUE@	$(am__append_33) $(LIBCOMMERCIUM_SODIUM) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_BENCH_TRUE@	$(am__DEPENDENCIES_3)
 bench_bench_commercium_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(bench_bench_commercium_CXXFLAGS) $(CXXFLAGS) \
@@ -996,8 +995,8 @@ commercium_cli_OBJECTS = $(am_commercium_cli_OBJECTS)
 commercium_cli_DEPENDENCIES = $(LIBCOMMERCIUM_CLI) \
 	$(am__DEPENDENCIES_4) $(LIBCOMMERCIUM_UTIL) \
 	$(LIBCOMMERCIUM_CRYPTO) $(LIBCOMMERCIUM_SODIUM) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
 commercium_cli_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(commercium_cli_CXXFLAGS) $(CXXFLAGS) \
@@ -1007,10 +1006,10 @@ am_commercium_seeder_OBJECTS =  \
 commercium_seeder_OBJECTS = $(am_commercium_seeder_OBJECTS)
 commercium_seeder_DEPENDENCIES = $(LIBCOMMERCIUM_SEEDER) \
 	$(LIBCOMMERCIUM_UTIL) $(LIBCOMMERCIUM_CRYPTO) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
 commercium_seeder_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(commercium_seeder_CXXFLAGS) $(CXXFLAGS) \
@@ -1024,8 +1023,8 @@ commercium_tx_OBJECTS = $(am_commercium_tx_OBJECTS)
 commercium_tx_DEPENDENCIES = $(am__DEPENDENCIES_4) \
 	$(LIBCOMMERCIUM_COMMON) $(LIBCOMMERCIUM_UTIL) \
 	$(LIBCOMMERCIUM_CONSENSUS) $(LIBCOMMERCIUM_CRYPTO) \
-	$(LIBSECP256K1) $(LIBCOMMERCIUM_SODIUM) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(LIBSECP256K1) $(LIBCOMMERCIUM_SODIUM) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3)
 commercium_tx_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(commercium_tx_CXXFLAGS) $(CXXFLAGS) $(commercium_tx_LDFLAGS) \
@@ -1039,13 +1038,13 @@ commerciumd_DEPENDENCIES = $(LIBCOMMERCIUM_SERVER) \
 	$(LIBCOMMERCIUM_COMMON) $(am__DEPENDENCIES_4) \
 	$(LIBCOMMERCIUM_UTIL) $(LIBCOMMERCIUM_WALLET) \
 	$(LIBCOMMERCIUM_ZMQ) $(LIBCOMMERCIUM_CONSENSUS) \
-	$(LIBCOMMERCIUM_CRYPTO) $(am__DEPENDENCIES_2) \
-	$(LIBLEVELDB_SSE42) $(am__DEPENDENCIES_3) $(LIBSECP256K1) \
-	$(LIBCOMMERCIUM_SODIUM) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(LIBCOMMERCIUM_CRYPTO) $(am__DEPENDENCIES_1) \
+	$(LIBLEVELDB_SSE42) $(am__DEPENDENCIES_2) $(LIBSECP256K1) \
+	$(LIBCOMMERCIUM_SODIUM) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3)
 commerciumd_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(commerciumd_CXXFLAGS) \
 	$(CXXFLAGS) $(commerciumd_LDFLAGS) $(LDFLAGS) -o $@
@@ -1065,7 +1064,7 @@ am__qt_commercium_qt_SOURCES_DIST = qt/commercium.cpp \
 qt_commercium_qt_OBJECTS = $(am_qt_commercium_qt_OBJECTS)
 @ENABLE_QT_TRUE@@ENABLE_ZMQ_TRUE@am__DEPENDENCIES_6 =  \
 @ENABLE_QT_TRUE@@ENABLE_ZMQ_TRUE@	$(LIBCOMMERCIUM_ZMQ) \
-@ENABLE_QT_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_QT_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_3)
 @ENABLE_QT_TRUE@qt_commercium_qt_DEPENDENCIES = qt/libcommerciumqt.a \
 @ENABLE_QT_TRUE@	$(LIBCOMMERCIUM_SERVER) \
 @ENABLE_QT_TRUE@	$(LIBCOMMERCIUM_SODIUM) $(am__append_41) \
@@ -1073,14 +1072,14 @@ qt_commercium_qt_OBJECTS = $(am_qt_commercium_qt_OBJECTS)
 @ENABLE_QT_TRUE@	$(LIBCOMMERCIUM_COMMON) $(LIBCOMMERCIUM_UTIL) \
 @ENABLE_QT_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
 @ENABLE_QT_TRUE@	$(LIBCOMMERCIUM_CRYPTO) $(am__DEPENDENCIES_4) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_2) $(LIBLEVELDB_SSE42) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(LIBSECP256K1) $(am__DEPENDENCIES_1) \
-@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_1) $(LIBLEVELDB_SSE42) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(LIBSECP256K1) $(am__DEPENDENCIES_3) \
+@ENABLE_QT_TRUE@	$(am__DEPENDENCIES_3)
 qt_commercium_qt_LINK = $(LIBTOOL) $(AM_V_lt) \
 	$(qt_commercium_qt_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link \
 	$(OBJCXXLD) $(AM_OBJCXXFLAGS) $(OBJCXXFLAGS) \
@@ -1109,7 +1108,7 @@ qt_test_test_commercium_qt_OBJECTS =  \
 	$(nodist_qt_test_test_commercium_qt_OBJECTS)
 @ENABLE_QT_TESTS_TRUE@@ENABLE_ZMQ_TRUE@am__DEPENDENCIES_7 =  \
 @ENABLE_QT_TESTS_TRUE@@ENABLE_ZMQ_TRUE@	$(LIBCOMMERCIUM_ZMQ) \
-@ENABLE_QT_TESTS_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_QT_TESTS_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_3)
 @ENABLE_QT_TESTS_TRUE@qt_test_test_commercium_qt_DEPENDENCIES =  \
 @ENABLE_QT_TESTS_TRUE@	$(LIBCOMMERCIUMQT) \
 @ENABLE_QT_TESTS_TRUE@	$(LIBCOMMERCIUM_SERVER) \
@@ -1121,21 +1120,21 @@ qt_test_test_commercium_qt_OBJECTS =  \
 @ENABLE_QT_TESTS_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
 @ENABLE_QT_TESTS_TRUE@	$(LIBCOMMERCIUM_CRYPTO) \
 @ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_4) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_2) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
 @ENABLE_QT_TESTS_TRUE@	$(LIBLEVELDB_SSE42) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_2) \
 @ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) $(LIBSECP256K1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1) \
-@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) $(LIBSECP256K1) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3) \
+@ENABLE_QT_TESTS_TRUE@	$(am__DEPENDENCIES_3)
 qt_test_test_commercium_qt_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(qt_test_test_commercium_qt_CXXFLAGS) $(CXXFLAGS) \
@@ -1261,7 +1260,7 @@ am__test_test_commercium_SOURCES_DIST = test/arith_uint256_tests.cpp \
 test_test_commercium_OBJECTS = $(am_test_test_commercium_OBJECTS) \
 	$(nodist_test_test_commercium_OBJECTS)
 @ENABLE_TESTS_TRUE@@ENABLE_ZMQ_TRUE@am__DEPENDENCIES_8 =  \
-@ENABLE_TESTS_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_1)
+@ENABLE_TESTS_TRUE@@ENABLE_ZMQ_TRUE@	$(am__DEPENDENCIES_3)
 @ENABLE_TESTS_TRUE@test_test_commercium_DEPENDENCIES =  \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_SERVER) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CLI) \
@@ -1269,14 +1268,14 @@ test_test_commercium_OBJECTS = $(am_test_test_commercium_OBJECTS) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_UTIL) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CRYPTO) \
-@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_2) \
-@ENABLE_TESTS_TRUE@	$(LIBLEVELDB_SSE42) $(am__DEPENDENCIES_3) \
-@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_TESTS_TRUE@	$(LIBSECP256K1) $(am__DEPENDENCIES_1) \
+@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_1) \
+@ENABLE_TESTS_TRUE@	$(LIBLEVELDB_SSE42) $(am__DEPENDENCIES_2) \
+@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_TESTS_TRUE@	$(LIBSECP256K1) $(am__DEPENDENCIES_3) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_SODIUM) $(am__append_26) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
-@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
+@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
 @ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_8)
 test_test_commercium_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
@@ -1294,7 +1293,7 @@ test_test_commercium_fuzzy_OBJECTS =  \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_UTIL) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CONSENSUS) \
 @ENABLE_TESTS_TRUE@	$(LIBCOMMERCIUM_CRYPTO) $(LIBSECP256K1) \
-@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+@ENABLE_TESTS_TRUE@	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
 test_test_commercium_fuzzy_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(test_test_commercium_fuzzy_CXXFLAGS) $(CXXFLAGS) \
@@ -1913,7 +1912,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 DIST_SUBDIRS = secp256k1 univalue
 AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
-AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS)
+AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS) -std=c++11
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
@@ -2290,8 +2289,8 @@ commercium_tx_LDADD = $(LIBUNIVALUE) $(LIBCOMMERCIUM_COMMON) \
 @BUILD_COMMERCIUM_LIBS_TRUE@	$(libcommercium_consensus_a_SOURCES) \
 @BUILD_COMMERCIUM_LIBS_TRUE@	$(am__append_10)
 @BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-@BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_LIBADD = $(LIBSECP256K1) $(BOOST_LIBS) $(LIBEQUIHASH_LIBS)
-@BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_COMMERCIUM_INTERNAL -DNO_UTIL_LOG
+@BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_LIBADD = $(LIBSECP256K1)
+@BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_COMMERCIUM_INTERNAL
 @BUILD_COMMERCIUM_LIBS_TRUE@libcommerciumconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 #

@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(cashaddr_testvectors_valid) {
         "prefix:x64nx6hz",
         "PREFIX:X64NX6HZ",
         "p:gpf8m4h7",
-        "commerciumcash:qpzry9x8gf2tvdw0s3jn54khce6mua7lcw20ayyn",
+        "commercium:qpzry9x8gf2tvdw0s3jn54khce6mua7lcw20ayyn",
         "bcctest:testnetaddressqm3zpk4w",
         "bccreg:555555555555555555555555555555555555555555555lmxjk3an",
     };

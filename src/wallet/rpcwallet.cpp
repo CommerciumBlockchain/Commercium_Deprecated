@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
+// Copyright (c) 2017-2018 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -569,6 +570,43 @@ static UniValue listaddressgroupings(const Config &config,
     return jsonGroupings;
 }
 
+static UniValue getaddressballance(const Config &config,
+                                     const JSONRPCRequest &request) {
+    if (!EnsureWalletIsAvailable(request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp) {
+        throw std::runtime_error(
+          "getaddressballance \"address\"\n"
+            "\nDEPRECATED. Returns the ballance with the given "
+            "address.\n"
+            "\nArguments:\n"
+            "1. \"address\"         (string, required) The commercium address for "
+            "ballance lookup.\n"
+            "\nResult:\n"
+            "\"amount\"        (numeric) The amount in address\n"
+            "\nExamples:\n" +
+            HelpExampleCli("getaddressballance",
+                           "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\"") +
+            HelpExampleRpc("getaddressballance",
+                           "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\""));
+    }
+
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    CTxDestination address = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(address)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,
+                           "Invalid Commercium address");
+    }
+    std::map<CTxDestination, CAmount> balances = pwalletMain->GetAddressBalances();
+    UniValue addressInfo(UniValue::VARR);
+    addressInfo.push_back(EncodeDestination(address));
+    addressInfo.push_back(ValueFromAmount(balances[address]));
+    return addressInfo;
+}
+
+
 static UniValue signmessage(const Config &config,
                             const JSONRPCRequest &request) {
     if (!EnsureWalletIsAvailable(request.fHelp)) {
@@ -1100,6 +1138,137 @@ static UniValue sendfrom(const Config &config, const JSONRPCRequest &request) {
     }
 
     SendMoney(dest, nAmount, false, wtx);
+
+    return wtx.GetId().GetHex();
+}
+
+static UniValue sendfromAtoB(const Config &config, const JSONRPCRequest &request) {
+    if (!EnsureWalletIsAvailable(request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 3 ||
+        request.params.size() > 6) {
+        throw std::runtime_error(
+            "sendfromAtoB \"from\" \"to\" \"amount\" ( "
+            "\"comment\" \"comment_to\" \"subtractfeefromamount\")\n"
+			"\nSend an amount from specified address to another one.\n" +
+			HelpRequiringPassphrase() + "\nArguments:\n"
+										"1. \"from\"				(string,"
+										"required) The commercium address to send "
+										"from.\n"
+										"2. \"to\"					(string,"
+										"required) The commercium address to send"
+										"to.\n"
+										"3. \"amount\"				(numeric or string,"
+										"required) The amount in " + CURRENCY_UNIT +
+										" to send. eg 0.1\n"
+										"4. \"comment\"				(string, optional) A comment used to "
+										"store what the transaction is for. \n"
+										"	This is not part of transaction, "
+										"just kept in your wallet. \n"
+										"5. \"comment_to\"			(string, optional) A comment to store "
+										"the name of the person or organization \n"
+										"to which you're sending the "
+										"transaction. This is not part of the transaction, just kept in your "
+										"wallet.\n"
+										"6. subtractfeefromamount 	(boolean, optional, default=false) The "
+										"fee will be deducted from the amount being sent.\n"
+										"The recipient will receive less "
+										"commerciums than you enter in the amount filed.\n"
+										"nResult:\n"
+										"\"txid\"					(string) The transaction id.\n"
+										"\nExamples:\n" +
+			HelpExampleCli("sendfromAtoB",
+						                "\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvayd3\" "           
+										"\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" 0.1") +
+            HelpExampleRpc("sendfromAtoB",
+                           "\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvexdd\" \"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvay\" 0.1 \"donation\" "
+						   "\"seans\" true" ));
+    }
+
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+
+
+    std::string src =request.params[0].get_str();
+
+
+    CWalletTx wtx;
+
+    CTxDestination dest = DecodeDestination(request.params[1].get_str());
+    if (!IsValidDestination(dest) ||
+		!IsValidDestination(DecodeDestination(src))) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid address");
+    }
+
+    // Amount
+    CAmount nAmount = AmountFromValue(request.params[2]).GetSatoshis();
+    if (nAmount <= 0) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    }
+
+    // Wallet comments
+    if (request.params.size() > 3 && !request.params[3].isNull() &&
+        !request.params[3].get_str().empty()) {
+        wtx.mapValue["comment"] = request.params[3].get_str();
+    }
+    if (request.params.size() > 4 && !request.params[4].isNull() &&
+        !request.params[4].get_str().empty()) {
+        wtx.mapValue["to"] = request.params[4].get_str();
+    }
+
+    bool fSubtractFeeFromAmount = true;
+    if (request.params.size() > 5) {
+        fSubtractFeeFromAmount = request.params[5].get_bool();
+    }
+
+    EnsureWalletIsUnlocked();
+
+	//SendMoney(dest, nAmount, fSubtractFeeFromAmount, wtx);
+	//static void SendMoney(const CTxDestination &address, CAmount nValue,
+    //                  bool fSubtractFeeFromAmount, CWalletTx &wtxNew)
+    CAmount curBalance = pwalletMain->GetBalance(); //
+
+
+    if (nAmount > curBalance) {
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+    }
+
+    if (pwalletMain->GetBroadcastTransactions() && !g_connman) {
+        throw JSONRPCError(
+            RPC_CLIENT_P2P_DISABLED,
+            "Error: Peer-to-peer functionality missing or disabled");
+    }
+
+    // Parse Commercium address
+    CScript scriptPubKey = GetScriptForDestination(dest);
+
+    // Create and send the transaction
+    CReserveKey reservekey(pwalletMain);
+    CAmount nFeeRequired;
+    std::string strError;
+    std::vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {scriptPubKey, nAmount, fSubtractFeeFromAmount};
+    vecSend.push_back(recipient);
+    if (!pwalletMain->CreateTheAddrTrans(vecSend, wtx, reservekey,
+                                        nFeeRequired, nChangePosRet,
+                                        strError, src)) {
+        if (!fSubtractFeeFromAmount && nAmount + nFeeRequired > curBalance) {
+            strError = strprintf("Error: This transaction requires a "
+                                 "transaction fee of at least %s",
+                                 FormatMoney(nFeeRequired));
+        }
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
+    CValidationState state;
+    if (!pwalletMain->CommitTransaction(wtx, reservekey, g_connman.get(),
+                                        state)) {
+        strError =
+            strprintf("Error: The transaction was rejected! Reason given: %s",
+                      state.GetRejectReason());
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
 
     return wtx.GetId().GetHex();
 }
@@ -3354,6 +3523,7 @@ static const CRPCCommand commands[] = {
     { "wallet",             "gettransaction",           gettransaction,           false,  {"txid","include_watchonly"} },
     { "wallet",             "getunconfirmedbalance",    getunconfirmedbalance,    false,  {} },
     { "wallet",             "getwalletinfo",            getwalletinfo,            false,  {} },
+    { "wallet",             "getaddressballance",       getaddressballance,       false,  {"address"} },
     { "wallet",             "keypoolrefill",            keypoolrefill,            true,   {"newsize"} },
     { "wallet",             "listaccounts",             listaccounts,             false,  {"minconf","include_watchonly"} },
     { "wallet",             "listaddressgroupings",     listaddressgroupings,     false,  {} },
@@ -3367,6 +3537,7 @@ static const CRPCCommand commands[] = {
     { "wallet",             "move",                     movecmd,                  false,  {"fromaccount","toaccount","amount","minconf","comment"} },
     { "wallet",             "sendfrom",                 sendfrom,                 false,  {"fromaccount","toaddress","amount","minconf","comment","comment_to"} },
     { "wallet",             "sendmany",                 sendmany,                 false,  {"fromaccount","amounts","minconf","comment","subtractfeefrom"} },
+    { "wallet",             "sendfromAtoB",             sendfromAtoB,             false,  {"fromaddr","toaddr","amounts","comment","comment_to","subtractfeefrom"} },
     { "wallet",             "sendtoaddress",            sendtoaddress,            false,  {"address","amount","comment","comment_to","subtractfeefromamount"} },
     { "wallet",             "setaccount",               setaccount,               true,   {"address","account"} },
     { "wallet",             "settxfee",                 settxfee,                 true,   {"amount"} },

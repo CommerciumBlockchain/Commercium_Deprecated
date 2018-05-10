@@ -80,8 +80,8 @@ CAddress::CAddress(CService ipIn, uint64_t nServicesIn) : CService(ipIn) {
 }
 
 void CAddress::Init() {
-//    nServices = NODE_NETWORK | NODE_COMMERCIUM_CASH;
-    nServices = NODE_NETWORK | NODE_COMMERCIUM_CASH;
+//    nServices = NODE_NETWORK | NODE_COMMERCIUM;
+    nServices = NODE_NETWORK | NODE_COMMERCIUM;
     nTime = 100000000;
 }
 

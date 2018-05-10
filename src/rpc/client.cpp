@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -36,6 +36,8 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     {"getnetworkhashps", 1, "height"},
     {"sendtoaddress", 1, "amount"},
     {"sendtoaddress", 4, "subtractfeefromamount"},
+    {"sendfromAtoB", 2, "amount"},
+    {"sendfromAtoB", 5, "subtractfeefromamount"},
     {"settxfee", 0, "amount"},
     {"getreceivedbyaddress", 1, "minconf"},
     {"getreceivedbyaccount", 1, "minconf"},

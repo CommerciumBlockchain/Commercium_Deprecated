@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -843,11 +843,11 @@ std::string CopyrightHolders(const std::string &strPrefix) {
         strPrefix +
         strprintf(_(COPYRIGHT_HOLDERS), _(COPYRIGHT_HOLDERS_SUBSTITUTION));
 
-    // Check for untranslated substitution to make sure Commercium Core copyright
+    // Check for untranslated substitution to make sure Commercium copyright
     // is not removed by accident.
     if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION)
             .find("Commercium Core") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Commercium Core developers";
+        strCopyrightHolders += "\n" + strPrefix + "The Commercium developers";
     }
     return strCopyrightHolders;
 }

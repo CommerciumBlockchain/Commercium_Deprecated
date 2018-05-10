@@ -152,12 +152,12 @@ public:
             }
         }
         if (filter_whitelist.empty()) {
-            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM_CASH);
-            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM_CASH |
+            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM);
+            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM |
                                     NODE_BLOOM);
-            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM_CASH |
+            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM |
                                     NODE_XTHIN);
-            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM_CASH |
+            filter_whitelist.insert(NODE_NETWORK | NODE_COMMERCIUM |
                                     NODE_BLOOM | NODE_XTHIN);
         }
         if (host != nullptr && ns == nullptr) showHelp = true;
@@ -444,10 +444,10 @@ extern "C" void *ThreadStats(void *) {
 }
 
 static const std::string mainnet_seeds[] = {
-    "seed.commercium.org", "seed.commercium1.org", 
+    "seed.commercium.net", "seed.commercium1.org", 
     "seed.commercium2.org", "seed.commercium3.org", ""};
 static const std::string testnet_seeds[] = {
-    "testnet-seed.commercium.org", "testnet-seed.commercium1.org", 
+    "testnet-seed.commercium.net", "testnet-seed.commercium1.org", 
     "testnet-seed.commercium2.org", "testnet-seed.commercium3.org", ""};
 static const std::string *seeds = mainnet_seeds;
 

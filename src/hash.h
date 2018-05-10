@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Commercium Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -148,7 +148,7 @@ public:
     int GetVersion() const { return nVersion; }
 
     void write(const char *pch, size_t size) {
-        ctx.Write((const uint8_t *)pch, size);
+	    ctx.Write((const uint8_t *)pch, size);
     }
 
     // invalidates the object

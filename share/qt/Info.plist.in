@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.commerciumcash.CommerciumPayment</string>
+      <string>org.commercium.CommerciumPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>commerciumcash</string>
+        <string>commercium</string>
       </array>
     </dict>
   </array>
@@ -58,7 +58,7 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>org.commerciumcash.paymentrequest</string>
+      <string>org.commercium.paymentrequest</string>
       <key>UTTypeDescription</key>
       <string>Commercium Cash payment request</string>
       <key>UTTypeConformsTo</key>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/commerciumcash-paymentrequest</string>
+        <string>application/commercium-paymentrequest</string>
         <key>public.filename-extension</key>
         <array>
-          <string>commerciumcashpaymentrequest</string>
+          <string>commerciumpaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -84,7 +84,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>org.commerciumcash.paymentrequest</string>
+        <string>org.commercium.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

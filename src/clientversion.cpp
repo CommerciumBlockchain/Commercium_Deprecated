@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2016 The Commercium Core developers
+// Copyright (c) 2012-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -43,11 +43,10 @@ const std::string CLIENT_NAME("Commercium");
 #endif
 
 //! git will put "#define GIT_ARCHIVE 1" on the next line inside archives.
-//! 
-#define GIT_ARCHIVE 1
+//! $Format:%n#define GIT_ARCHIVE 1$
 #ifdef GIT_ARCHIVE
-#define GIT_COMMIT_ID "d36ae6a"
-#define GIT_COMMIT_DATE "Sun, 31 Dec 2017 16:39:37 +0800"
+#define GIT_COMMIT_ID "$Format:%h$"
+#define GIT_COMMIT_DATE "$Format:%cD$"
 #endif
 
 #define BUILD_DESC_WITH_SUFFIX(maj, min, rev, build, suffix)                   \
