@@ -56,7 +56,7 @@ public:
      * @note Source: https://en.commercium.it/wiki/Units.
      * Please add only sensible ones.
      */
-    enum Unit { BTN, mBTN, uBTN };
+    enum Unit { CMM, mCMM, uCMM };
 
     enum SeparatorStyle { separatorNever, separatorStandard, separatorAlways };
 

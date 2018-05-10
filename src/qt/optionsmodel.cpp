@@ -74,7 +74,7 @@ void OptionsModel::Init(bool resetSettings) {
 
     // Display
     if (!settings.contains("nDisplayUnit")) {
-        settings.setValue("nDisplayUnit", CommerciumUnits::BTN);
+        settings.setValue("nDisplayUnit", CommerciumUnits::CMM);
     }
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 

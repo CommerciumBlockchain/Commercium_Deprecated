@@ -54,7 +54,7 @@ bool equihash_(std::string solver, CBlock *pblock, int n, int k)
         }
 
         // Found a solution
-        LogPrintf("NanoMiner:\n");
+        LogPrintf("CMMMiner:\n");
         LogPrintf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", pblock->GetHash().GetHex(), hashTarget.GetHex());
         return true;
     };

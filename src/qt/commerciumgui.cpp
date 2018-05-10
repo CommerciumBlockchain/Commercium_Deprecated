@@ -968,7 +968,7 @@ void CommerciumGUI::message(const QString &title, const QString &message,
         // Check for buttons, use OK as default, if none was supplied
         QMessageBox::StandardButton buttons;
         if (!(buttons = (QMessageBox::StandardButton)(
-                  style & CClientUIInterface::BTN_MASK)))
+                  style & CClientUIInterface::CMM_MASK)))
             buttons = QMessageBox::Ok;
 
         showNormalIfMinimized();

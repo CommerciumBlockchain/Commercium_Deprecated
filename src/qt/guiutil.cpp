@@ -192,7 +192,7 @@ bool parseCommerciumURI(const QUrl &uri, SendCoinsRecipient *out) {
             fShouldReturnFalse = false;
         } else if (i->first == "amount") {
             if (!i->second.isEmpty()) {
-                if (!CommerciumUnits::parse(CommerciumUnits::BTN, i->second,
+                if (!CommerciumUnits::parse(CommerciumUnits::CMM, i->second,
                                          &rv.amount)) {
                     return false;
                 }
@@ -230,7 +230,7 @@ QString formatCommerciumURI(const SendCoinsRecipient &info) {
     if (info.amount) {
         ret +=
             QString("?amount=%1")
-                .arg(CommerciumUnits::format(CommerciumUnits::BTN, info.amount, false,
+                .arg(CommerciumUnits::format(CommerciumUnits::CMM, info.amount, false,
                                           CommerciumUnits::separatorNever));
         paramCount++;
     }
