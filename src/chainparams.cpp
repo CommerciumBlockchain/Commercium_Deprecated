@@ -189,10 +189,10 @@ public:
         pchMessageStart[1] = 0xad;
         pchMessageStart[2] = 0xbe;
         pchMessageStart[3] = 0xef;
-		pchCmmMessageStart[1] = 0xde;
+	pchCmmMessageStart[0] = 0xde;
         pchCmmMessageStart[1] = 0xad;
         pchCmmMessageStart[2] = 0xbe;
-        pchCmmMessageStart[3] = 0xef;						
+        pchCmmMessageStart[3] = 0xef;
 
         nDefaultPort = 2018;
         nPruneAfterHeight = 100000;
