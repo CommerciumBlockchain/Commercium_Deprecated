@@ -73,7 +73,7 @@ RUN \
 WORKDIR /build
 RUN \
   mkdir commercium-$CMM_VER-$LOS_TYPE && \
-  cp Commercium/src/commerciumd Commercium/src/commercium-cli Commercium/src/commercium-tx Commercium/src/commercium-seeder commercium-$CMM_VER-$LOS_TYPE/ && \
+  cp Commercium/src/commerciumd Commercium/src/commercium-cli Commercium/src/qt/commercium-qt Commercium/src/commercium-tx Commercium/src/commercium-seeder commercium-$CMM_VER-$LOS_TYPE/ && \
   tar -czf commercium-$CMM_VER-$LOS_TYPE.tar.gz commercium-$CMM_VER-$LOS_TYPE/
 
 ##Run the linux node in docker if you want. But the wallet wont be saved in docker, so I dont recommendtrying that. 
@@ -92,12 +92,12 @@ RUN \
   make HOST=x86_64-w64-mingw32
 RUN \
   ./autogen.sh && \
-  CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --with-seeder=false --disable-shared --disable-tests --prefix=/ && \
+  CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure -with-gui --with-seeder=false --disable-shared --disable-tests --disable-bench --prefix=/ && \
   make LDFLAGS=-no-undefined
 #Prepare the Windows files for export
 WORKDIR /build
 RUN mkdir commercium-$CMM_VER-$WOS_TYPE && \
-  cp Commercium/src/commercium*.exe commercium-$CMM_VER-$WOS_TYPE/ && \
+  cp Commercium/src/commercium*.exe Commercium/src/qt/commercium-qt.exe commercium-$CMM_VER-$WOS_TYPE/ && \
   zip -r commercium-$CMM_VER-$WOS_TYPE.zip commercium-$CMM_VER-$WOS_TYPE
 #~~~~~ END WIN64 ~~~~~
 RUN \

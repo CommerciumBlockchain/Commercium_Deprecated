@@ -1,4 +1,4 @@
-Commercium version 0.15.1 is now available from:
+Commercium version 0.15.3 is now available from:
 
   <https://download.commercium.org/0.15.1/>
 

@@ -30,7 +30,6 @@ These dependencies are required:
  --------------|------------------|----------------------
  docker        | Container        | Docker program base
  docker-compose| Container Control| Docker Container environment
- --------------|------------------|----------------------
 
 Memory Requirements
 --------------------
@@ -55,31 +54,31 @@ Build requirements:
 ```bash
     sudo apt-get install docker docker.io 
 ```
-    [Instructions](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+   [Instructions](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
 Dependency Build Instructions: CentOS
 ----------------------------------------------
 Build requirements:
 
-    [Instructions](https://docs.docker.com/install/linux/docker-ce/centos/)
+   [Instructions](https://docs.docker.com/install/linux/docker-ce/centos/)
 
 Dependency Build Instructions: Fedora & Red Hat
 ----------------------------------------------
 Build requirements:
 
-    [Instructions](https://docs.docker.com/install/linux/docker-ce/fedora/)
+   [Instructions](https://docs.docker.com/install/linux/docker-ce/fedora/)
 
 Dependency Build Instructions: Windows
 ----------------------------------------------
 Build requirements:
 
-    [Instructions](https://store.docker.com/editions/community/docker-ce-desktop-windows)
+   [Instructions](https://store.docker.com/editions/community/docker-ce-desktop-windows)
 
 Dependency Build Instructions: Mac
 ----------------------------------------------
 Build requirements:
 
-    [Instructions](https://docs.docker.com/docker-for-mac/install/)
+   [Instructions](https://docs.docker.com/docker-for-mac/install/)
 
 
 ## License
