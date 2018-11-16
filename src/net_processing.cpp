@@ -2705,17 +2705,20 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
             }
         }
 
-        CValidationState state;
-        if (!ProcessNewBlockHeaders(config, headers, state, &pindexLast)) {
-            int nDoS;
-            if (state.IsInvalid(nDoS)) {
-                if (nDoS > 0) {
-                    LOCK(cs_main);
-                    Misbehaving(pfrom, nDoS, state.GetRejectReason());
-                }
-                return error("invalid header received");
-            }
-        }
+	CValidationState state;
+	CBlockIndex *tip = chainActive.Tip();
+	CBlockIndex index;
+	index.pprev = tip;
+	if (!ProcessNewBlockHeaders(config, headers, state, &pindexLast) &&  tip->nHeight > 736754) {     //dup inc height
+	  int nDoS;
+	  if (state.IsInvalid(nDoS)) {
+	    if (nDoS > 0) {
+	      LOCK(cs_main);
+	      Misbehaving(pfrom, nDoS, state.GetRejectReason());
+	    }
+	    return error("invalid header received");
+	  }
+	}
 
         {
             LOCK(cs_main);
