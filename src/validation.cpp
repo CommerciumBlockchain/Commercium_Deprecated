@@ -564,7 +564,7 @@ bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state) {
 		       "bad-txns-prevout-null");
     }
 
-    if (!vInOutPoints.insert(txin.prevout).second) {
+    if (!vInOutPoints.insert(txin.prevout).second && pindex->nHeight > 736754) {             //736754 duplicate tx inc
       return state.DoS(100, false, REJECT_INVALID,
 		       "bad-txns-inputs-duplicate");
     }
