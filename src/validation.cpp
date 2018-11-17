@@ -556,7 +556,6 @@ bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state) {
 	CBlockIndex *tip = chainActive.Tip();
  	CBlockIndex index;
  	index.pprev = tip;
- 	if (!ProcessNewBlock
         if (!vInOutPoints.insert(txin.prevout).second &&  tip->nHeight > 736755) {
             return state.DoS(100, false, REJECT_INVALID,
                              "bad-txns-inputs-duplicate");
