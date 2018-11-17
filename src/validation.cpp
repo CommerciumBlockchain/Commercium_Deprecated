@@ -552,7 +552,6 @@ bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state) {
             return state.DoS(10, false, REJECT_INVALID,
                              "bad-txns-prevout-null");
         }
-
 	CBlockIndex *tip = chainActive.Tip();
  	CBlockIndex index;
  	index.pprev = tip;
