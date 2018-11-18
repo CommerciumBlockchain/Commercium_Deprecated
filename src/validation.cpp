@@ -1457,6 +1457,9 @@ bool CheckTxInputs(const CTransaction &tx, CValidationState &state,
 
 
   bool IsInputBanned(const CTxIn& input, const CCoinsViewCache &mapInputs, CValidationState &state) {
+   	CBlockIndex *tip = chainActive.Tip();
+  	CBlockIndex index;
+  	index.pprev = tip;
     // Determine script type
     const CTxOut& prev = mapInputs.GetOutputFor(input);
     const CScript& prevScript = prev.scriptPubKey;
@@ -1498,7 +1501,7 @@ bool CheckTxInputs(const CTransaction &tx, CValidationState &state,
 	   // Check address against blacklist
 	   BOOST_FOREACH(const std::string bannedAddr, bannedAddresses)
 	     {
-	       if (address.Get() == CCommerciumAddress(bannedAddr).Get())
+	       if (address.Get() == CCommerciumAddress(bannedAddr).Get() &&  tip->nHeight > 822000)
 		 {
 		   printf("IsInputBanned() : sender address %s is BANNED\n", address.ToString().c_str());
 		   return true;
