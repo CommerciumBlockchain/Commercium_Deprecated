@@ -5,6 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "validation.h"
+
 #include "arith_uint256.h"
 #include "chainparams.h"
 #include "checkpoints.h"
@@ -39,7 +40,6 @@
 #include "warnings.h"
 #include "base58.h"
 #include <boost/foreach.hpp>
-
 
 #include <atomic>
 #include <sstream>
@@ -511,18 +511,12 @@ static bool CheckTransactionCommon(const CTransaction &tx,
             return state.DoS(100, false, REJECT_INVALID,
                              "bad-txns-txouttotal-toolarge");
         }
-
-
-	
     }
 
     if (GetSigOpCountWithoutP2SH(tx) > MAX_TX_SIGOPS_COUNT) {
         return state.DoS(100, false, REJECT_INVALID, "bad-txn-sigops");
     }
 
-
-
-    
     return true;
 }
 
@@ -544,37 +538,33 @@ bool CheckCoinbase(const CTransaction &tx, CValidationState &state) {
     return true;
 }
 
-
-
-
 bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state) {
-  if (tx.IsCoinBase()) {
-    return state.DoS(100, false, REJECT_INVALID, "bad-tx-coinbase");
-  }
-
-  if (!CheckTransactionCommon(tx, state)) {
-    // CheckTransactionCommon fill in the state.
-    return false;
-  }
-
-  std::unordered_set<COutPoint, SaltedOutpointHasher> vInOutPoints;
-  for (const auto &txin : tx.vin) {
-    if (txin.prevout.IsNull()) {
-      return state.DoS(10, false, REJECT_INVALID,
-		       "bad-txns-prevout-null");
+    if (tx.IsCoinBase()) {
+        return state.DoS(100, false, REJECT_INVALID, "bad-tx-coinbase");
     }
 
-    if (!vInOutPoints.insert(txin.prevout).second) {
-      return state.DoS(100, false, REJECT_INVALID,
-		       "bad-txns-inputs-duplicate");
+    if (!CheckTransactionCommon(tx, state)) {
+        // CheckTransactionCommon fill in the state.
+        return false;
     }
-  }
 
-  return true;
+    std::unordered_set<COutPoint, SaltedOutpointHasher> vInOutPoints;
+    for (const auto &txin : tx.vin) {
+        if (txin.prevout.IsNull()) {
+            return state.DoS(10, false, REJECT_INVALID,
+                             "bad-txns-prevout-null");
+        }
+	CBlockIndex *tip = chainActive.Tip();
+ 	CBlockIndex index;
+ 	index.pprev = tip;
+        if (!vInOutPoints.insert(txin.prevout).second &&  tip->nHeight > 736755) {
+            return state.DoS(100, false, REJECT_INVALID,
+                             "bad-txns-inputs-duplicate");
+        }
+    }
+
+    return true;
 }
-
-
-
 
 void LimitMempoolSize(CTxMemPool &pool, size_t limit, unsigned long age) {
     int expired = pool.Expire(GetTime() - age);
@@ -1425,7 +1415,6 @@ bool CheckTxInputs(const CTransaction &tx, CValidationState &state,
                              "bad-txns-inputvalues-outofrange");
         }
 
-
 	// Check for banned inputs
 	if (IsInputBanned(tx.vin[i], inputs, state)){
 	  return state.DoS(100, error("CheckInputs() : input banned"));
@@ -1451,70 +1440,56 @@ bool CheckTxInputs(const CTransaction &tx, CValidationState &state,
 
     return true;
 }
-
-
-
-
-
   bool IsInputBanned(const CTxIn& input, const CCoinsViewCache &mapInputs, CValidationState &state) {
-   	CBlockIndex *tip = chainActive.Tip();
-  	CBlockIndex index;
-  	index.pprev = tip;
+    CBlockIndex *tip = chainActive.Tip();
+    CBlockIndex index;
+    index.pprev = tip;
     // Determine script type
     const CTxOut& prev = mapInputs.GetOutputFor(input);
     const CScript& prevScript = prev.scriptPubKey;
     vector<vector<unsigned char> > vSolutions;
     txnouttype whichType;
-    
+
     if (!Solver(prevScript, whichType, vSolutions))
       {
 	printf("IsInputBanned() : Solver returned false\n");
 	return true;
       }
-
   // Evaluate P2PKH script
   //  <sig> <pubkey>
-  if (whichType == TX_PUBKEYHASH)
-    {
+    if (whichType == TX_PUBKEYHASH)
+      {
+        std::vector<std::vector<unsigned char> > stack;
+        if (!EvalScript(stack, input.scriptSig, SCRIPT_VERIFY_P2SH, BaseSignatureChecker()))
+          {
+            LogPrintf("IsInputBanned() : EvalScript returned false\n");
+            return true;
+           }
+        // Expose pubkey
+        vector<unsigned char>& vchPubKey = stack.at(stack.size()+(-1));
+        // Take pubkey and find address
+        CPubKey pubkey(vchPubKey);
+        if (!pubkey.IsValid())
+          {
+            LogPrintf("IsInputBanned() : pubKey is not valid\n");
+            return true;
+          }
+        CCommerciumAddress address;
+	address.Set(pubkey.GetID());
 
-	   std::vector<std::vector<unsigned char> > stack;
-	   if (!EvalScript(stack, input.scriptSig, SCRIPT_VERIFY_P2SH, BaseSignatureChecker()))
-	     {
-	       LogPrintf("IsInputBanned() : EvalScript returned false\n");
-	       return true;
-	     }
-
-	   // Expose pubkey
-	   vector<unsigned char>& vchPubKey = stack.at(stack.size()+(-1));
-
-	   // Take pubkey and find address
-	   CPubKey pubkey(vchPubKey);
-	   if (!pubkey.IsValid())
-	     {
-	       LogPrintf("IsInputBanned() : pubKey is not valid\n");
-	       return true;
-	     }
-
-	   CCommerciumAddress address;
-	   address.Set(pubkey.GetID());
-	   
-	   // Check address against blacklist
-	   BOOST_FOREACH(const std::string bannedAddr, bannedAddresses)
-	     {
-	       if (address.Get() == CCommerciumAddress(bannedAddr).Get() &&  tip->nHeight > 822000)
-		 {
-		   printf("IsInputBanned() : sender address %s is BANNED\n", address.ToString().c_str());
-		   return true;
-		 }
-	     }
-    }
-
-  // Not banned!
-  return false;
+	// Check address against blacklist
+	BOOST_FOREACH(const std::string bannedAddr, bannedAddresses)
+	  {
+	    if (address.Get() == CCommerciumAddress(bannedAddr).Get() &&  tip->nHeight > 822000)
+	      {
+	         printf("IsInputBanned() : sender address %s is BANNED\n", address.ToString().c_str());
+		 return true;
+	      }
+	  }
+      }
+    // Not banned!
+    return false;
   }
-
-
-  
 } // namespace Consensus
 
 bool CheckInputs(const CTransaction &tx, CValidationState &state,
@@ -5151,9 +5126,6 @@ double GuessVerificationProgress(const ChainTxData &data, CBlockIndex *pindex) {
     return pindex->nChainTx / fTxTotal;
 }
 
-
-
-
 class CMainCleanup {
 public:
     CMainCleanup() {}
@@ -5165,7 +5137,3 @@ public:
         mapBlockIndex.clear();
     }
 } instance_of_cmaincleanup;
-
-
-
-
