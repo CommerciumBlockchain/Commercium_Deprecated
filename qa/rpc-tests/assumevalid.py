@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 '''
 assumevalid.py
 
 Test logic for skipping signature validation on blocks which we've assumed
-valid (https://github.com/commercium/commercium/pull/9484)
+valid (https://github.com/Bitcoin/Bitcoin/pull/9484)
 
 We build a chain that includes and invalid signature for one of the
 transactions:

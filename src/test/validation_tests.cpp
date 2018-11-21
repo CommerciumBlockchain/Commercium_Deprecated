@@ -1,5 +1,4 @@
-// Copyright (c) 2011-2016 The Commercium developers
-// Copyright (c) 2017 The Commercium developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 

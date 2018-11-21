@@ -30510,11 +30510,11 @@ $as_echo "#define COPYRIGHT_YEAR 2017" >>confdefs.h
 $as_echo "#define COPYRIGHT_HOLDERS \"The %s developers\"" >>confdefs.h
 
 
-$as_echo "#define COPYRIGHT_HOLDERS_SUBSTITUTION \"Commercium\"" >>confdefs.h
+$as_echo "#define COPYRIGHT_HOLDERS_SUBSTITUTION \"Bitcoin\"" >>confdefs.h
 
 
 
-$as_echo "#define COPYRIGHT_HOLDERS_FINAL \"The Commercium developers\"" >>confdefs.h
+$as_echo "#define COPYRIGHT_HOLDERS_FINAL \"The Bitcoin developers\"" >>confdefs.h
 
 CLIENT_VERSION_MAJOR=0
 
@@ -30530,9 +30530,9 @@ COPYRIGHT_YEAR=2017
 
 COPYRIGHT_HOLDERS="The %s developers"
 
-COPYRIGHT_HOLDERS_SUBSTITUTION="Commercium"
+COPYRIGHT_HOLDERS_SUBSTITUTION="Bitcoin"
 
-COPYRIGHT_HOLDERS_FINAL="The Commercium developers"
+COPYRIGHT_HOLDERS_FINAL="The Bitcoin developers"
 
 
 

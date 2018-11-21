@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2016 The Commercium developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -211,18 +211,19 @@ private:
 
 public:
     /**
-     * @param[in] path        Location in the filesystem where leveldb data will
-     * be stored.
-     * @param[in] nCacheSize  Configures various leveldb cache settings.
-     * @param[in] fMemory     If true, use leveldb's memory environment.
-     * @param[in] fWipe       If true, remove all existing data.
-     * @param[in] obfuscate   If true, store data obfuscated via simple XOR. If
-     * false, XOR
-     *                        with a zero'd byte array.
+     * @param[in] path          Location in the filesystem where leveldb data will be stored.
+     * @param[in] nCacheSize    Configures various leveldb cache settings.
+     * @param[in] fMemory       If true, use leveldb's memory environment.
+     * @param[in] fWipe         If true, remove all existing data.
+     * @param[in] obfuscate     If true, store data obfuscated via simple XOR. If false, XOR
+     *                          with a zero'd byte array.
+     * @param[in] compression   Enable snappy compression for the database
+     * @param[in] maxOpenFiles  The maximum number of open files for the database
      */
     CDBWrapper(const boost::filesystem::path &path, size_t nCacheSize,
                bool fMemory = false, bool fWipe = false,
-               bool obfuscate = false);
+               bool obfuscate = false, bool compression = false,
+               int maxOpenFiles = 64);
     ~CDBWrapper();
 
     template <typename K, typename V> bool Read(const K &key, V &value) const {
