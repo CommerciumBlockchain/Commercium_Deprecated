@@ -116,6 +116,7 @@ extern const std::string CURRENCY_UNIT;
  */
 
 static const Amount MAX_MONEY = int64_t(1000) * 21000000 * COIN;
+
 inline bool MoneyRange(const Amount nValue) {
     return (nValue >= 0 && nValue <= MAX_MONEY);
 }

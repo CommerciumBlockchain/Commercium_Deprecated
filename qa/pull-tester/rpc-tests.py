@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Commercium Core developers
-# Copyright (c) 2017 The Commercium developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
+# Copyright (c) 2017 The Bitcoin developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -103,6 +103,11 @@ if ENABLE_ZMQ:
         raise
 
 testScripts = [
+    # bitcore-support
+    'addressindex.py',
+    'timestampindex.py',
+    'spentindex.py',
+    'txindex.py',
     # longest test should go first, to favor running tests in parallel
     'wallet-hd.py',
     'walletbackup.py',

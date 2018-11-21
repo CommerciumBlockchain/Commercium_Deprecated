@@ -1,4 +1,3 @@
-// Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -115,6 +114,15 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     {"setnetworkactive", 0, "state"},
     {"getmempoolancestors", 1, "verbose"},
     {"getmempooldescendants", 1, "verbose"},
+    {"getblockhashes", 0 , "high"},
+    {"getblockhashes", 1, "low"},
+    {"getblockhashes", 2, "options" },
+    {"getspentinfo", 0, "txid_index"},
+    {"getaddresstxids", 0, "addresses"},
+    {"getaddressbalance", 0, "addresses"},
+    {"getaddressdeltas", 0, "addresses"},
+    {"getaddressutxos", 0, "addresses"},
+    {"getaddressmempool", 0, "addresses"},
     {"disconnectnode", 1, "nodeid"},
     // Echo with conversion (For testing only)
     {"echojson", 0, "arg0"},

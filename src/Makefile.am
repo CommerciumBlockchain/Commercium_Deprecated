@@ -89,6 +89,9 @@ endif
 # commercium core #
 COMMERCIUM_CORE_H = \
   addrdb.h \
+  addressindex.h \
+  spentindex.h \
+  timestampindex.h \
   addrman.h \
   base58.h \
   bloom.h \
