@@ -9,8 +9,8 @@ Copyright: 2009-2017, Bitcoin Core Developers, 2017 Bitcoin Developers
 License: Expat
 Comment: The Commercium Developers encompasses those contributing to Bitcoin
          client open source development (various clients).
-         The Bitcoin Core Developers encompasses the current developers
-         listed on commercium.org, as well as the numerous contributors to
+         The Commercium Core Developers encompasses the current developers
+         listed on commercium.net, as well as the numerous contributors to
          the project.
 
 Files: debian/*

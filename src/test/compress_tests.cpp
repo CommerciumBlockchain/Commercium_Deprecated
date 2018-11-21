@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,10 +17,10 @@
 #define NUM_MULTIPLES_CENT 10000
 
 // amounts 1 .. 10000
-#define NUM_MULTIPLES_1CMM 10000
+#define NUM_MULTIPLES_1BTN 10000
 
 // amounts 50 .. 21000000
-#define NUM_MULTIPLES_50CMM 420000
+#define NUM_MULTIPLES_50BTN 420000
 
 BOOST_FIXTURE_TEST_SUITE(compress_tests, BasicTestingSetup)
 
@@ -55,11 +55,11 @@ BOOST_AUTO_TEST_CASE(compress_amounts) {
         BOOST_CHECK(TestEncode(i * CENT));
     }
 
-    for (int64_t i = 1; i <= NUM_MULTIPLES_1CMM; i++) {
+    for (int64_t i = 1; i <= NUM_MULTIPLES_1BTN; i++) {
         BOOST_CHECK(TestEncode(i * COIN));
     }
 
-    for (int64_t i = 1; i <= NUM_MULTIPLES_50CMM; i++) {
+    for (int64_t i = 1; i <= NUM_MULTIPLES_50BTN; i++) {
         BOOST_CHECK(TestEncode(i * 50 * COIN));
     }
 

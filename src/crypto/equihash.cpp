@@ -16,15 +16,9 @@
 #include "config/commercium-config.h"
 #endif
 
-#include "compat/endian.h"
 #include "sodium.h"
 #include "crypto/equihash.h"
-
-#ifndef NO_UTIL_LOG
 #include "util.h"
-#else
-#define LogPrint(...)
-#endif
 
 #include <exception>
 #include <algorithm>

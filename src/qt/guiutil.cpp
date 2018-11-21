@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -86,7 +86,7 @@ extern double NSAppKitVersionNumber;
 #endif
 
 namespace GUIUtil {
-const QString URI_SCHEME("commerciumcash");
+const QString URI_SCHEME("commercium");
 
 QString dateTimeStr(const QDateTime &date) {
     return date.date().toString(Qt::SystemLocaleShortDate) + QString(" ") +
@@ -158,7 +158,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent) {
 }
 
 bool parseCommerciumURI(const QUrl &uri, SendCoinsRecipient *out) {
-    // return if URI is not valid or is no commerciumcash: URI
+    // return if URI is not valid or is no commercium: URI
     if (!uri.isValid() || uri.scheme() != URI_SCHEME) return false;
 
     SendCoinsRecipient rv;
@@ -211,9 +211,9 @@ bool parseCommerciumURI(const QUrl &uri, SendCoinsRecipient *out) {
 }
 
 bool parseCommerciumURI(QString uri, SendCoinsRecipient *out) {
-    // Convert commerciumcash:// to commerciumcash:
+    // Convert commercium:// to commercium:
     //
-    //    Cannot handle this later, because commerciumcash://
+    //    Cannot handle this later, because commercium://
     //    will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
     if (uri.startsWith(URI_SCHEME + "://", Qt::CaseInsensitive)) {
@@ -922,8 +922,8 @@ QString formatServicesStr(quint64 mask) {
                 case NODE_XTHIN:
                     strList.append("XTHIN");
                     break;
-                case NODE_COMMERCIUM_CASH:
-                    strList.append("CASH");
+                case NODE_COMMERCIUM:
+                    strList.append("NANO");
                     break;
                 default:
                     strList.append(QString("%1[%2]").arg("UNKNOWN").arg(check));

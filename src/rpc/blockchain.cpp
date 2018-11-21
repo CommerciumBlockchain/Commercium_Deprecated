@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -244,6 +244,7 @@ UniValue blockToJSON(const CBlock &block, const CBlockIndex *blockindex,
             txs.push_back(tx->GetId().GetHex());
     }
     result.push_back(Pair("tx", txs));
+	result.push_back(Pair("hashReserved", block.hashReserved.GetHex()));
     result.push_back(Pair("time", block.GetBlockTime()));
     result.push_back(
         Pair("mediantime", int64_t(blockindex->GetMedianTimePast())));
@@ -1000,6 +1001,7 @@ UniValue getblock(const Config &config, const JSONRPCRequest &request) {
             "     \"transactionid\"     (string) The transaction id\n"
             "     ,...\n"
             "  ],\n"
+			"  \"hashReserved\" : \"xxxx\", (string) used for gpu mining\n"
             "  \"time\" : ttt,          (numeric) The block time in seconds "
             "since epoch (Jan 1 1970 GMT)\n"
             "  \"mediantime\" : ttt,    (numeric) The median block time in "

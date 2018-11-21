@@ -1,0 +1,8 @@
+version: '2.0'
+
+services:
+  build:
+    image: docker-cmm
+    container_name: docker-cmm
+    build:
+      context: .

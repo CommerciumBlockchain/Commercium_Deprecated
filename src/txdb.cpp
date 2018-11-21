@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -404,6 +404,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts(
         pindexNew->nUndoPos = diskindex.nUndoPos;
         pindexNew->nVersion = diskindex.nVersion;
         pindexNew->hashMerkleRoot = diskindex.hashMerkleRoot;
+		pindexNew->hashReserved = diskindex.hashReserved;
         pindexNew->nTime = diskindex.nTime;
         pindexNew->nBits = diskindex.nBits;
         pindexNew->nNonce = diskindex.nNonce;

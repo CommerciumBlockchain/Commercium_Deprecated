@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 The Bitcore Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -208,6 +208,7 @@ int CBase58Data::CompareTo(const CBase58Data &b58) const {
 }
 
 namespace {
+
 class CCommerciumAddressVisitor : public boost::static_visitor<bool> {
 private:
     CCommerciumAddress *addr;

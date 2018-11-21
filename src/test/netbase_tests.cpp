@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -65,10 +65,10 @@ static bool TestSplitHost(std::string test, std::string host, int port) {
 }
 
 BOOST_AUTO_TEST_CASE(netbase_splithost) {
-    BOOST_CHECK(TestSplitHost("www.commercium.org", "www.commercium.org", -1));
-    BOOST_CHECK(TestSplitHost("[www.commercium.org]", "www.commercium.org", -1));
-    BOOST_CHECK(TestSplitHost("www.commercium.org:80", "www.commercium.org", 80));
-    BOOST_CHECK(TestSplitHost("[www.commercium.org]:80", "www.commercium.org", 80));
+    BOOST_CHECK(TestSplitHost("www.commercium.net", "www.commercium.net", -1));
+    BOOST_CHECK(TestSplitHost("[www.commercium.net]", "www.commercium.net", -1));
+    BOOST_CHECK(TestSplitHost("www.commercium.net:80", "www.commercium.net", 80));
+    BOOST_CHECK(TestSplitHost("[www.commercium.net]:80", "www.commercium.net", 80));
     BOOST_CHECK(TestSplitHost("127.0.0.1", "127.0.0.1", -1));
     BOOST_CHECK(TestSplitHost("127.0.0.1:9556", "127.0.0.1", 9556));
     BOOST_CHECK(TestSplitHost("[127.0.0.1]", "127.0.0.1", -1));

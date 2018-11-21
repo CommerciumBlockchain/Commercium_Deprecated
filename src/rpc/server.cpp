@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -224,12 +224,12 @@ std::string CRPCTable::help(Config &config,
 static UniValue help(Config &config, const JSONRPCRequest &jsonRequest) {
     if (jsonRequest.fHelp || jsonRequest.params.size() > 1)
         throw std::runtime_error(
-            "help ( \"command\" )\n"
+            "help ( \"command)\" )\n"
             "\nList all commands, or get help for a specified command.\n"
             "\nArguments:\n"
             "1. \"command\"     (string, optional) The command to get help on\n"
             "\nResult:\n"
-            "\"text\"     (string) The help text\n");
+            "\"text\"     (string 2018/1/9) The help text\n");
 
     std::string strCommand;
     if (jsonRequest.params.size() > 0)

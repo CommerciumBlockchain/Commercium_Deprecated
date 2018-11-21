@@ -233,6 +233,9 @@
 /* Define to 1 if you have the `shlwapi' library (-lshlwapi). */
 #undef HAVE_LIBSHLWAPI
 
+/* Define to 1 if you have the `sodium' library (-lsodium). */
+#undef HAVE_LIBSODIUM
+
 /* Define to 1 if you have the `ssp' library (-lssp). */
 #undef HAVE_LIBSSP
 

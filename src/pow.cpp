@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,6 +13,7 @@
 #include "streams.h"
 #include "uint256.h"
 #include "util.h"
+#include "utilstrencodings.h"
 
 #include <algorithm>
 
@@ -20,16 +21,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex *pindexLast, const CBlockHead
 {
 	unsigned int pow = UintToArith256(params.powLimit).GetCompact();
 	int nHeight = pindexLast->nHeight + 1;
-	// genesis
-	if (pindexLast == NULL)
-	{
-		return pow;
-	}
-/*	else if (nHeight < params.nPowAveragingWindow + 1)
-	{
-		return UintToArith256(params.powLimitStart).GetCompact();
-	}
-*/
+
 	const CBlockIndex *pindexFirst = pindexLast;
 	arith_uint256 bnTot {0};
 	for (int i = 0; pindexFirst && i < params.nPowAveragingWindow; ++i)
@@ -69,6 +61,7 @@ unsigned int CalculateNextWorkRequired(arith_uint256 bnAvg, int64_t lastBlockTim
 	return bnNew.GetCompact();
 }
 
+
 bool CheckEquihashSolution(const CBlockHeader *pblock, const CChainParams& params)
 {
     size_t n = params.n();
@@ -99,8 +92,9 @@ bool CheckEquihashSolution(const CBlockHeader *pblock, const CChainParams& param
     bool isValid;
     EhIsValidSolution(n, k, state, pblock->nSolution, isValid);
     if (!isValid)
+	{
         return error("CheckEquihashSolution(): invalid solution");
-
+	}
     return true;
 }
 

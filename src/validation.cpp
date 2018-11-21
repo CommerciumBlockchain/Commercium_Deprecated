@@ -1,6 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Bitcoin developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -51,8 +50,11 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-#error "Btcnano cannot be compiled without assertions."
+#error "Commercium cannot be compiled without assertions."
 #endif
+
+#include <iostream>
+using namespace std;
 
 /**
  * Global state
@@ -94,7 +96,7 @@ static void CheckBlockIndex(const Consensus::Params &consensusParams);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Btcnano Signed Message:\n";
+const std::string strMessageMagic = "Commercium Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -476,8 +478,7 @@ uint64_t GetTransactionSigOpCount(const CTransaction &tx,
 }
 
 static bool CheckTransactionCommon(const CTransaction &tx,
-                                   CValidationState &state,
-                                   bool fCheckDuplicateInputs) {
+                                   CValidationState &state) {
     // Basic checks that don't depend on any context
     if (tx.vin.empty()) {
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
@@ -516,29 +517,16 @@ static bool CheckTransactionCommon(const CTransaction &tx,
         return state.DoS(100, false, REJECT_INVALID, "bad-txn-sigops");
     }
 
-    // Check for duplicate inputs - note that this check is slow so we skip it
-    // in CheckBlock
-    if (fCheckDuplicateInputs) {
-        std::set<COutPoint> vInOutPoints;
-        for (const auto &txin : tx.vin) {
-            if (!vInOutPoints.insert(txin.prevout).second) {
-                return state.DoS(100, false, REJECT_INVALID,
-                                 "bad-txns-inputs-duplicate");
-            }
-        }
-    }
-
     return true;
 }
 
-bool CheckCoinbase(const CTransaction &tx, CValidationState &state,
-                   bool fCheckDuplicateInputs) {
+bool CheckCoinbase(const CTransaction &tx, CValidationState &state) {
     if (!tx.IsCoinBase()) {
         return state.DoS(100, false, REJECT_INVALID, "bad-cb-missing", false,
                          "first tx is not coinbase");
     }
 
-    if (!CheckTransactionCommon(tx, state, fCheckDuplicateInputs)) {
+    if (!CheckTransactionCommon(tx, state)) {
         // CheckTransactionCommon fill in the state.
         return false;
     }
@@ -550,21 +538,28 @@ bool CheckCoinbase(const CTransaction &tx, CValidationState &state,
     return true;
 }
 
-bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state,
-                             bool fCheckDuplicateInputs) {
+bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state) {
     if (tx.IsCoinBase()) {
         return state.DoS(100, false, REJECT_INVALID, "bad-tx-coinbase");
     }
 
-    if (!CheckTransactionCommon(tx, state, fCheckDuplicateInputs)) {
+    if (!CheckTransactionCommon(tx, state)) {
         // CheckTransactionCommon fill in the state.
         return false;
     }
 
+    std::unordered_set<COutPoint, SaltedOutpointHasher> vInOutPoints;
     for (const auto &txin : tx.vin) {
         if (txin.prevout.IsNull()) {
             return state.DoS(10, false, REJECT_INVALID,
                              "bad-txns-prevout-null");
+        }
+	CBlockIndex *tip = chainActive.Tip();
+ 	CBlockIndex index;
+ 	index.pprev = tip;
+        if (!vInOutPoints.insert(txin.prevout).second &&  tip->nHeight > 736755) {
+            return state.DoS(100, false, REJECT_INVALID,
+                             "bad-txns-inputs-duplicate");
         }
     }
 
@@ -683,7 +678,7 @@ static bool AcceptToMemoryPoolWorker(
     }
 
     // Coinbase is only valid in a block, not as a loose transaction.
-    if (!CheckRegularTransaction(tx, state, true)) {
+    if (!CheckRegularTransaction(tx, state)) {
         // state filled in by CheckRegularTransaction.
         return false;
     }
@@ -1240,10 +1235,34 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params &consensusParams)
         return 10000000 * COIN.GetSatoshis();
 
     CAmount nSubsidy = 32 * COIN.GetSatoshis();
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // Subsidy is cut in half every 420,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
     return nSubsidy;
 }
+
+/*
+    // Mining slow stop
+	const int val = consensusParams.nSubsidySlowStopInterval;
+	if (nHeight > val)
+	{
+		if (nHeight > 1260000)
+		{
+			nSubsidy >>= 2;
+		}
+
+		// for compliance of previously generated block.
+		nSubsidy /= val;
+		if (nHeight < val / 2) nSubsidy *= nHeight;
+		else nSubsidy *= (nHeight + 1);
+		return nSubsidy;
+	}
+
+	int halvings = (nHeight - 501888) / consensusParams.nSubsidyHalvingInterval;
+	// Force block reward to zero when right shift is undefined.
+	if (halvings >= 64) return 0;
+}
+*/
+
 
 bool IsInitialBlockDownload() {
     const CChainParams &chainParams = Params();
@@ -1893,7 +1912,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos,
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("btcnano-scriptch");
+    RenameThread("commercium-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -3437,7 +3456,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos,
 
     return true;
 }
-/*
+
 bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
                       const Consensus::Params &consensusParams,
                       bool fCheckPOW) {
@@ -3455,29 +3474,6 @@ bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
 
     return true;
 }
-*/
-//Error with ban on invalid invalid solution check.
-bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state,
-                      const Consensus::Params &consensusParams,
-                      bool fCheckPOW) {
-        // Check Equihash solution
-        if (fCheckPOW &&
-                !CheckEquihashSolution(&block, Params()))
-                return state.DoS(0, error("CheckBlockHeader(): Equihash solution invalid"),
-                         REJECT_INVALID, "invalid-solution");
-
-    // Check proof of work matches claimed amount
-    if (fCheckPOW &&
-        !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
-        return state.DoS(0, false, REJECT_INVALID, "high-hash", false,
-                         "proof of work failed");
-
-    return true;
-}
-
-
-
-
 
 bool CheckBlock(const Config &config, const CBlock &block,
                 CValidationState &state,
@@ -3539,7 +3535,8 @@ bool CheckBlock(const Config &config, const CBlock &block,
     }
 
     // And a valid coinbase.
-    if (!CheckCoinbase(*block.vtx[0], state, false)) {
+
+     if (!CheckCoinbase(*block.vtx[0], state)) {
         return state.Invalid(false, state.GetRejectCode(),
                              state.GetRejectReason(),
                              strprintf("Coinbase check failed (txid %s) %s",
@@ -3573,11 +3570,11 @@ bool CheckBlock(const Config &config, const CBlock &block,
             break;
         }
 
-        // Check that the transaction is valid. because this check differs for
-        // the coinbase, the loos is arranged such as this only runs after at
+        // Check that the transaction is valid. Because this check differs for
+        // the coinbase, the loop is arranged such as this only runs after at
         // least one increment.
         tx = block.vtx[i].get();
-        if (!CheckRegularTransaction(*tx, state, false)) {
+        if (!CheckRegularTransaction(*tx, state)) {
             return state.Invalid(
                 false, state.GetRejectCode(), state.GetRejectReason(),
                 strprintf("Transaction check failed (txid %s) %s",
@@ -3782,7 +3779,13 @@ static bool AcceptBlockHeader(const Config &config, const CBlockHeader &block,
         }
 
         if (!CheckBlockHeader(block, state, chainparams.GetConsensus())) {
-            return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__,
+/*			
+			cout << "nBits = " << block.nBits << ", nNonce = " << block.nNonce.ToString()
+				 << ", time = " << block.nTime << ", hash = " << block.GetHash().ToString() << ", prehash = "
+				 << block.hashPrevBlock.ToString() << endl; 
+			LogPrintf("bits = %d, nNonce=%s, time=%d, hash=%s, prehash=%s\n", block.nBits, block.nNonce.ToString(), 
+						block.nTime, block.GetHash().ToString(), block.hashPrevBlock.ToString());
+*/            return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__,
                          hash.ToString(), FormatStateMessage(state));
         }
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcore Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -893,8 +893,8 @@ std::string HelpMessage(HelpMessageMode mode) {
 
 std::string LicenseInfo() {
     const std::string URL_SOURCE_CODE =
-        "<https://github.com/CommerciumBlockchain/commercium>";
-    const std::string URL_WEBSITE = "<https://www.commercium.org>";
+        "<https://github.com/Commercium/commercium>";
+    const std::string URL_WEBSITE = "<https://www.commercium.net>";
 
     return CopyrightHolders(
                strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) +
@@ -1553,10 +1553,10 @@ bool AppInitParameterInteraction(Config &config) {
     // Signal Commercium support.
     // TODO: remove some time after the hardfork when no longer needed
     // to differentiate the network nodes.
-    nLocalServices = ServiceFlags(nLocalServices | NODE_COMMERCIUM_CASH);
+    nLocalServices = ServiceFlags(nLocalServices | NODE_COMMERCIUM);
 //    nLocalServices = ServiceFlags(nLocalServices);
-    // Preferentially keep peers which service NODE_COMMERCIUM_CASH
-    nRelevantServices = ServiceFlags(nRelevantServices | NODE_COMMERCIUM_CASH);
+    // Preferentially keep peers which service NODE_COMMERCIUM
+    nRelevantServices = ServiceFlags(nRelevantServices | NODE_COMMERCIUM);
 
     nMaxTipAge = GetArg("-maxtipage", DEFAULT_MAX_TIP_AGE);
 
@@ -2119,7 +2119,7 @@ bool AppInitMain(Config &config, boost::thread_group &threadGroup,
                     strLoadError + ".\nPlease restart with -reindex or "
                                    "-reindex-chainstate to recover.",
                     "", CClientUIInterface::MSG_ERROR |
-                            CClientUIInterface::CMM_ABORT);
+                            CClientUIInterface::BTN_ABORT);
                 if (fRet) {
                     fReindex = true;
                     fRequestShutdown = false;

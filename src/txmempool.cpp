@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Commercium developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -991,7 +991,7 @@ CTxMemPool::GetSortedDepthAndScore() const {
          mi != mapTx.end(); ++mi) {
         iters.push_back(mi);
     }
-    std::sort(iters.begin(), iters.end(), DepthAndScoreComparator());
+    //std::sort(iters.begin(), iters.end(), DepthAndScoreComparator());
     return iters;
 }
 
