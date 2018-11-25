@@ -53,6 +53,10 @@ struct LockPoints;
 #define MIN_TRANSACTION_SIZE                                                   \
     (::GetSerializeSize(CTransaction(), SER_NETWORK, PROTOCOL_VERSION))
 
+
+int32_t commercium_bannedset(int32_t *indallvoutsp,uint256 *array,int32_t max);
+
+
 /** Default for DEFAULT_WHITELISTRELAY. */
 static const bool DEFAULT_WHITELISTRELAY = true;
 /** Default for DEFAULT_WHITELISTFORCERELAY. */

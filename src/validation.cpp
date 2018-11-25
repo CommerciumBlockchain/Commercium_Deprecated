@@ -5080,3 +5080,25 @@ public:
         mapBlockIndex.clear();
     }
 } instance_of_cmaincleanup;
+
+
+const char *banned_txids[] =
+  {
+    "4e6eead2ae8a93562d9f15cf8bf3c26ad125acd1b3b1c533d78ebf3f921890f0", // for review
+   };
+
+
+
+int32_t commercium_bannedset(int32_t *indallvoutsp,uint256 *array,int32_t max)
+{
+  int32_t i;
+  if ( sizeof(banned_txids)/sizeof(*banned_txids) > max )
+    {
+      fprintf(stderr,"safecoin_bannedset: buffer too small %ld vs %d\n",sizeof(banned_txids)/sizeof(*banned_txids),max);
+      exit(-1);
+    }
+  for (i=0; i<sizeof(banned_txids)/sizeof(*banned_txids); i++)
+    array[i] = uint256S(banned_txids[i]);
+  *indallvoutsp = i-2;
+  return(i);
+}
