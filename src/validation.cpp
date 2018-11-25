@@ -477,6 +477,28 @@ uint64_t GetTransactionSigOpCount(const CTransaction &tx,
 
 static bool CheckTransactionCommon(const CTransaction &tx,
                                    CValidationState &state) {
+	
+static uint256 array[64]; static int32_t numbanned,indallvouts; int32_t j,k,n;
+    if ( *(int32_t *)&array[0] == 0 )
+        numbanned = commercium_bannedset(&indallvouts,array,(int32_t)(sizeof(array)/sizeof(*array)));
+    n = tx.vin.size();
+    for (j=0; j<n; j++)
+    {
+        for (k=0; k<numbanned; k++)
+        {
+            if ( tx.vin[j].prevout.hash == array[k] && (tx.vin[j].prevout.n == 1 || k >= indallvouts) )
+	     
+            {
+               static uint32_t counter;
+                if ( counter++ < 100 )
+                    printf("MEMPOOL: banned tx.%d being used at ht.%d vout.%d\n",k,(int32_t)chainActive.Tip()->nHeight,j);
+               return(false);
+	      
+            }
+        }
+    }	
+	
+	
     // Basic checks that don't depend on any context
     if (tx.vin.empty()) {
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
