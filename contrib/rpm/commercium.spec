@@ -24,18 +24,18 @@ URL:		https://commercium.net/
 Source0:	https://commercium.net/bin/commercium-core-%{version}/commercium-%{version}.tar.gz
 Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 
-Source10:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/contrib/debian/examples/commercium.conf
+Source10:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/contrib/debian/examples/commercium.conf
 
 #man pages
-Source20:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/doc/man/commerciumd.1
-Source21:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/doc/man/commercium-cli.1
-Source22:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/doc/man/commercium-qt.1
+Source20:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/doc/man/commerciumd.1
+Source21:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/doc/man/commercium-cli.1
+Source22:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/doc/man/commercium-qt.1
 
 #selinux
-Source30:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/contrib/rpm/commercium.te
+Source30:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/contrib/rpm/commercium.te
 # Source31 - what about commercium-tx and bench_commercium ???
-Source31:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/contrib/rpm/commercium.fc
-Source32:	https://raw.githubusercontent.com/commercium/commercium/v%{version}/contrib/rpm/commercium.if
+Source31:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/contrib/rpm/commercium.fc
+Source32:	https://raw.githubusercontent.com/CommerciumBlockchain/Commercium/v%{version}/contrib/rpm/commercium.if
 
 Source100:	https://upload.wikimedia.org/wikipedia/commons/4/46/Commercium.svg
 
