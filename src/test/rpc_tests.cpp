@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign_missing_amount) {
     // Old format, missing amount parameter for prevout should generate
     // an RPC error.  This is because of new replay-protected tx's require
     // nonzero amount present in signed tx.
-    // See: https://github.com/Commercium/commercium/issues/63
+    // See: https://github.com/CommerciumBlockchain/Commercium/issues/63
     // (We will re-use the tx + keys from the above rpc_rawsign test for
     // simplicity.)
     UniValue r;

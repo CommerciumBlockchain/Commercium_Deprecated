@@ -893,7 +893,7 @@ std::string HelpMessage(HelpMessageMode mode) {
 
 std::string LicenseInfo() {
     const std::string URL_SOURCE_CODE =
-        "<https://github.com/Commercium/commercium>";
+        "<https://github.com/CommerciumBlockchain/Commercium>";
     const std::string URL_WEBSITE = "<https://www.commercium.net>";
 
     return CopyrightHolders(

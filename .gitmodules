@@ -1,3 +1,15 @@
 [submodule "libsodium"]
 	path = depends/libsodium
 	url = https://github.com/jedisct1/libsodium.git
+[submodule "secp256k1"]
+	path = src/secp256k1
+	url = https://github.com/bitcoin-core/secp256k1
+[submodule "leveldb"]
+	path = src/leveldb
+	url = https://github.com/chirino/leveldb.git
+[submodule "univalue"]
+	path = src/univalue
+	url = https://github.com/jgarzik/univalue.git
+[submodule "ctaes"]
+	path = src/crypto/ctaes
+	url = https://github.com/bitcoin-core/ctaes.git
