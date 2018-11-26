@@ -170,7 +170,7 @@ public:
  * Script-hash-addresses have version 5 (or 196 testnet).
  * The data vector contains RIPEMD160(SHA256(cscript)), where cscript is the
  * serialized redemption script.
- */
+ *
 class CCommerciumAddress : public CBase58Data {
 public:
     bool Set(const CKeyID &id);
@@ -185,7 +185,7 @@ public:
     CCommerciumAddress(const char *pszAddress) { SetString(pszAddress); }
 
     CTxDestination Get() const;
-};
+};*/
 
 /**
  * A base58-encoded secret key
