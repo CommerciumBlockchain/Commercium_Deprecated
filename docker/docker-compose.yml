@@ -1,8 +1,108 @@
 version: '2.0'
-
+# Comment out sections you dont want and build with `docker-compose up`
+# then for each image run 'docker cp image:/build/export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip .'
+# Clean up the system with 'docker-compose down --rmi all'
 services:
-  build:
-    image: docker-cmm
-    container_name: docker-cmm
+  linux-win18:
+    image: ubuntu-win18-qt
+    volumes:
+        - ./:/build/export
     build:
       context: .
+      args:
+        - OS_VER=18.04
+        - LOS_TYPE=linux64
+        - WOS_TYPE=win64
+#      - NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium.git
+  linux-win18-server:
+    image: ubuntu18-win-server
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=18.04
+        - LOS_TYPE=linux64
+#        - WOS_TYPE=win64
+        - SERVER="yes"
+#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
+  linux16:
+    image: ubuntu16-qt
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=16.04
+        - LOS_TYPE=linux64
+  linux16-server:
+    image: ubuntu16-server
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=16.04
+        - LOS_TYPE=linux64
+        - SERVER="yes"
+        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
+  linux14:
+    image: ubuntu14-qt
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=14.04
+        - LOS_TYPE=linux64
+  linux14-server:
+    image: ubuntu14-server
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=14.04
+        - LOS_TYPE=linux64
+        - SERVER="yes"
+#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
+#  win64-qt:
+#    image: win64-qt
+#    volumes:
+#        - ./:/build/export
+#    build:
+#      context: .
+#      args:
+#        - OS_VER=18.04
+#        - WOS_TYPE=win64
+#  win64-server:
+#    image: win64-server
+#    volumes:
+#        - ./:/build/export
+#    build:
+#      context: .
+#      args:
+#        - OS_VER=18.04
+#        - WOS_TYPE=win64
+#        - SERVER=1
+#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
+  win32-qt:
+    image: win32-qt
+    volumes:
+        - ./:/build/export
+    build:
+      context: .
+      args:
+        - OS_VER=18.04
+        - WOS_TYPE=win32
+#  win32-server:
+#    image: win32-server
+#    volumes:
+#        - ./:/build/export
+#    build:
+#      context: .
+#      args:
+#        - OS_VER=18.04
+#        - WOS_TYPE=win32
+#        - SERVER=1
+#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
