@@ -185,14 +185,14 @@ public:
          * normal data. The characters are rarely used upper ASCII, not valid as
          * UTF-8, and produce a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x07;
-        pchMessageStart[1] = 0x08;
-        pchMessageStart[2] = 0x09;
-        pchMessageStart[3] = 0x10;
-	pchCmmMessageStart[0] = 0x07;
-        pchCmmMessageStart[1] = 0x08;
-        pchCmmMessageStart[2] = 0x09;
-        pchCmmMessageStart[3] = 0x10;
+        pchMessageStart[0] = 0xde;
+        pchMessageStart[1] = 0xad;
+        pchMessageStart[2] = 0xbe;
+        pchMessageStart[3] = 0xef;
+	pchCmmMessageStart[0] = 0xde;
+        pchCmmMessageStart[1] = 0xad;
+        pchCmmMessageStart[2] = 0xbe;
+        pchCmmMessageStart[3] = 0xef;
 
         nDefaultPort = 12018;
         nPruneAfterHeight = 100000;
@@ -230,12 +230,14 @@ public:
         vSeeds.push_back(
             CDNSSeedData("miningspeed.com", "comseeder.miningspeed.com", true));
 
-		// play on Bitcoin Testnet params for compatibility
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 111);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<uint8_t>(1, 196);
-        base58Prefixes[SECRET_KEY] = std::vector<uint8_t>(1, 239);
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
-        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+		// start with 'C'
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 28);
+		// start with 'M'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<uint8_t>(1, 50);
+        // the first character, when base58 encoded, is "5" or "K" or "L" (as in Commercium)
+        base58Prefixes[SECRET_KEY] = std::vector<uint8_t>(1, 140);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
         vFixedSeeds = std::vector<SeedSpec6>(
             pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
