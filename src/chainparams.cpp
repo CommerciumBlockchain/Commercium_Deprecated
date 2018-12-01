@@ -332,7 +332,7 @@ public:
         pchCmmMessageStart[1] = 0x1e;
         pchCmmMessageStart[2] = 0xab;
         pchCmmMessageStart[3] = 0xcd;
-        nDefaultPort = 12018;
+        nDefaultPort = 2018;
         nPruneAfterHeight = 1000;
 
         // Equihash params
