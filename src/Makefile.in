@@ -512,8 +512,9 @@ am__libcommercium_util_a_SOURCES_DIST = support/lockedpool.cpp \
 	compat/glibcxx_sanity.cpp compat/strnlen.cpp random.cpp \
 	rpc/protocol.cpp support/cleanse.cpp sync.cpp \
 	threadinterrupt.cpp util.cpp utilmoneystr.cpp \
-	utilstrencodings.cpp utiltime.cpp addrdb.h addrman.h base58.h \
-	bloom.h blockencodings.h cashaddr.h chain.h chainparams.h \
+	utilstrencodings.cpp utiltime.cpp addrdb.h addressindex.h \
+	spentindex.h timestampindex.h addrman.h base58.h bloom.h \
+	blockencodings.h cashaddr.h chain.h chainparams.h \
 	chainparamsbase.h chainparamsseeds.h checkpoints.h \
 	checkqueue.h clientversion.h coins.h compat.h \
 	compat/byteswap.h compat/endian.h compat/sanity.h compressor.h \
@@ -1947,6 +1948,9 @@ BENCHMARKS =
 # commercium core #
 COMMERCIUM_CORE_H = \
   addrdb.h \
+  addressindex.h \
+  spentindex.h \
+  timestampindex.h \
   addrman.h \
   base58.h \
   bloom.h \

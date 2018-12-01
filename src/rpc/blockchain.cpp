@@ -151,10 +151,7 @@ UniValue blockToDeltasJSON(const CBlock& block, const CBlockIndex* blockindex)
                 CSpentIndexValue spentInfo;
                 CSpentIndexKey spentKey(input.prevout.hash, input.prevout.n);
 
-                if (GetSpentIndex(spentKey, spentInfo)) {
-                    if (spentInfo.addressType == 1) {
-                        delta.push_back(Pair("address", CCommerciumAddress(CKeyID(spentInfo.addressHash)).ToString()));
-                    } else if (spentInfo.addressType == 2)  {
+		if (spentInfo.addressType == 2)  {
                         delta.push_back(Pair("address", CCommerciumAddress(CScriptID(spentInfo.addressHash)).ToString()));
                     } else {
                         continue;
@@ -163,13 +160,12 @@ UniValue blockToDeltasJSON(const CBlock& block, const CBlockIndex* blockindex)
                     delta.push_back(Pair("index", (int)j));
                     delta.push_back(Pair("prevtxid", input.prevout.hash.GetHex()));
                     delta.push_back(Pair("prevout", (int)input.prevout.n));
-
-                    inputs.push_back(delta);
+}
                 } else {
                     throw JSONRPCError(RPC_INTERNAL_ERROR, "Spent information not available");
-                }
+              //  }
 
-            }
+            //}
         }
 
         entry.push_back(Pair("inputs", inputs));
@@ -850,10 +846,6 @@ UniValue getblockhashes(const Config &config, const JSONRPCRequest& request)
 
     if (fActiveOnly)
         LOCK(cs_main);
-
-    if (!GetTimestampIndex(high, low, fActiveOnly, blockHashes)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for block hashes");
-    }
 
     UniValue result(UniValue::VARR);
 

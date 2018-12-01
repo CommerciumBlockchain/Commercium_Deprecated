@@ -758,12 +758,6 @@ UniValue getaddressutxos(const Config &config, const JSONRPCRequest& request)
 
     std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
 
-    for (std::vector<std::pair<uint160, int> >::iterator it = addresses.begin(); it != addresses.end(); it++) {
-        if (!GetAddressUnspent((*it).first, (*it).second, unspentOutputs)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-        }
-    }
-
     std::sort(unspentOutputs.begin(), unspentOutputs.end(), heightSort);
 
     UniValue utxos(UniValue::VARR);
@@ -861,18 +855,6 @@ UniValue getaddressdeltas(const Config &config, const JSONRPCRequest& request)
 
     std::vector<std::pair<CAddressIndexKey, CAmount> > addressIndex;
 
-    for (std::vector<std::pair<uint160, int> >::iterator it = addresses.begin(); it != addresses.end(); it++) {
-        if (start > 0 && end > 0) {
-            if (!GetAddressIndex((*it).first, (*it).second, addressIndex, start, end)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-            }
-        } else {
-            if (!GetAddressIndex((*it).first, (*it).second, addressIndex)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-            }
-        }
-    }
-
     UniValue deltas(UniValue::VARR);
 
     for (std::vector<std::pair<CAddressIndexKey, CAmount> >::const_iterator it=addressIndex.begin(); it!=addressIndex.end(); it++) {
@@ -954,12 +936,6 @@ UniValue getaddressbalance(const Config &config, const JSONRPCRequest& request)
 
     std::vector<std::pair<CAddressIndexKey, CAmount> > addressIndex;
 
-    for (std::vector<std::pair<uint160, int> >::iterator it = addresses.begin(); it != addresses.end(); it++) {
-        if (!GetAddressIndex((*it).first, (*it).second, addressIndex)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-        }
-    }
-
     CAmount balance = 0;
     CAmount received = 0;
 
@@ -1023,18 +999,6 @@ UniValue getaddresstxids(const Config &config, const JSONRPCRequest& request)
 
     std::vector<std::pair<CAddressIndexKey, CAmount> > addressIndex;
 
-    for (std::vector<std::pair<uint160, int> >::iterator it = addresses.begin(); it != addresses.end(); it++) {
-        if (start > 0 && end > 0) {
-            if (!GetAddressIndex((*it).first, (*it).second, addressIndex, start, end)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-            }
-        } else {
-            if (!GetAddressIndex((*it).first, (*it).second, addressIndex)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available for address");
-            }
-        }
-    }
-
     std::set<std::pair<int, std::string> > txids;
     UniValue result(UniValue::VARR);
 
@@ -1097,10 +1061,6 @@ UniValue getspentinfo(const Config &config, const JSONRPCRequest& request)
     CSpentIndexKey key(txid, outputIndex);
     CSpentIndexValue value;
 
-    if (!GetSpentIndex(key, value)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get spent info");
-    }
-
     UniValue obj(UniValue::VOBJ);
     obj.push_back(Pair("txid", value.txid.GetHex()));
     obj.push_back(Pair("index", (int)value.inputIndex));
@@ -1126,9 +1086,6 @@ static const CRPCCommand commands[] = {
     { "addressindex",       "getaddressdeltas",       getaddressdeltas,      false, {} },
     { "addressindex",       "getaddresstxids",        getaddresstxids,       false, {} },
     { "addressindex",       "getaddressbalance",      getaddressbalance,     false, {} },
-
-    /* Blockchain */
-    { "blockchain",         "getspentinfo",           getspentinfo,          false, {} },
 
     /* Not shown in help */
     { "hidden",             "setmocktime",            setmocktime,            true,  {"timestamp"}},

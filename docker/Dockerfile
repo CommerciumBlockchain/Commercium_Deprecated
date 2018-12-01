@@ -133,7 +133,7 @@ RUN \
 && make install
 
 ##Install Node source code and dependencies
-ARG NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium.git
+ARG NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium-TESTNET.git
 ARG NODE_GIT_CHECKOUT
 ##The NODE_GIT_CHECKOUT can be a branch, commit, tag, release, or omitted entierly for the latest code base
 #ARG NODE_GIT_CHECKOUT=v0.1-17
@@ -163,10 +163,10 @@ RUN \
     wget $LIBSODIUM_URL/$LIBSODIUM_PACKAGE \
 &&  echo "$LIBSODIUM_PACKAGE_HASH $LIBSODIUM_PACKAGE" | md5sum -c \
 &&  tar xzf $LIBSODIUM_PACKAGE \
-&&  mv libsodium-1.0.13/* /build/Commercium/depends/libsodium/ \
+&&  mv libsodium-1.0.13/* /build/Commercium-TESTNET/depends/libsodium/ \
   ; fi
 
-WORKDIR /build/Commercium/depends/libsodium
+WORKDIR /build/Commercium-TESTNET/depends/libsodium
 RUN \
  #Autogen not needed when building from tar, but is when building from git submodule
   if ! [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "16" ]  ; then \
@@ -178,7 +178,7 @@ RUN \
 && make install
 
 ##Install uniValue for linux servers and hosts
-WORKDIR /build/Commercium/src/univalue
+WORKDIR /build/Commercium-TESTNET/src/univalue
 RUN \
   if [ "$SERVER" ] ; then \
     ./autogen.sh \
@@ -224,15 +224,15 @@ RUN \
     ; fi \
 &&  if ! [ -d export ] ; then mkdir export ; fi \
 &&  mkdir commercium-$ostype \
-&&  cp Commercium/src/commerciumd commercium-$ostype/ \
-&&  if [ -f Commercium/src/commercium-cli ] ; then \
-      cp Commercium/src/commercium-cli Commercium/src/commercium-tx commercium-$ostype/ \
+&&  cp Commercium-TESTNET/src/commerciumd commercium-$ostype/ \
+&&  if [ -f Commercium-TESTNET/src/commercium-cli ] ; then \
+      cp Commercium-TESTNET/src/commercium-cli Commercium/src/commercium-tx commercium-$ostype/ \
     ; fi \
-&&  if [ -f Commercium/src/commercium-seeder ] ; then \
-      cp Commercium/src/commercium-seeder commercium-$ostype/ \
+&&  if [ -f Commercium-TESTNET/src/commercium-seeder ] ; then \
+      cp Commercium-TESTNET/src/commercium-seeder commercium-$ostype/ \
     ; fi \
-&&  if [ -f Commercium/src/qt/commercium-qt ] ; then \
-      cp Commercium/src/qt/commercium-qt commercium-$ostype/ \
+&&  if [ -f Commercium-TESTNET/src/qt/commercium-qt ] ; then \
+      cp Commercium-TESTNET/src/qt/commercium-qt commercium-$ostype/ \
     ; fi \
 &&  tar -czvf export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.tar.gz commercium-$ostype \
   ; fi
@@ -300,9 +300,9 @@ RUN \
       ostype=qt-$WOS_TYPE \
 &&  if ! [ -d export ] ; then mkdir export ; fi \
 &&  mkdir commercium-$ostype \
-&&  cp Commercium/src/commercium*.exe commercium-$ostype/ \
-&&  if [ -f Commercium/src/qt/commercium-qt.exe ] ; then \
-      cp Commercium/src/qt/commercium-qt.exe commercium-$ostype/ \
+&&  cp Commercium-TESTNET/src/commercium*.exe commercium-$ostype/ \
+&&  if [ -f Commercium-TESTNET/src/qt/commercium-qt.exe ] ; then \
+      cp Commercium-TESTNET/src/qt/commercium-qt.exe commercium-$ostype/ \
     ; fi \
 &&  zip -r export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip commercium-$ostype \
   ; fi
@@ -332,73 +332,73 @@ RUN \
 ## Uncomment this whole section and start with 'docker build --build-arg LOS_TYPE=linux64 --build-arg SERVER=1 --tag cmm-server .'
 ## This part still needs some work.
 
-#FROM ubuntu:$OS_VER as run
-#ARG OS_VER
-#ARG SERVER
-#ARG LOS_TYPE
-#ARG NODE_GIT_CHECKOUT
-#RUN \
-#  apt-get update \
-###UBUNTU 14 Run Dependencies
-#&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "14" ] ; then \
-#    DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
-#&&  DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ubuntu-toolchain-r/test \
-#&&  apt-get update \
-#&&  DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#    gcc-5 \
-#    g++-5 \
-#    libboost-chrono1.54 \
-#    libboost-filesystem1.54 \
-#    libboost-program-options1.54 \
-#    libevent-pthreads-2.0-5 \
-#    libboost-system1.54.0 \
-#    libboost-thread1.54.0 \
-#    libevent-2.0-5 \
-#    libminiupnpc8 \
-#    libssl-dev \
-#    libzmq3 \
-#&&  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 \
-#&&  update-alternatives --config gcc \
-#  ; fi \
-###UBUNTU 16 Run Dependencies
-#&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "16" ] ; then \
-#    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#    libboost-chrono1.58 \
-#    libboost-filesystem1.58 \
-#    libboost-program-options1.58 \
-#    libevent-pthreads-2.0-5 \
-#    libboost-system1.58.0 \
-#    libboost-thread1.58.0 \
-#    libevent-2.0-5 \
-#    libminiupnpc10 \
-#    libssl-dev \
-#    libzmq5 \
-#  ; fi \
-###Ubuntu 18 Run Dependencies
-#&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "18" ] ; then \
-#    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#    libboost-chrono1.65.1 \
-#    libboost-filesystem1.65.1 \
-#    libboost-program-options1.65.1 \
-#    libevent-pthreads-2.1-6 \
-#    libboost-system1.65.1 \
-#    libboost-thread1.65.1 \
-#    libevent-2.1-6 \
-#    libminiupnpc10 \
-#    libssl-dev \
-#    libzmq5 \
-#  ; fi 
-#
-#WORKDIR /root
-#EXPOSE 8332
-#RUN \
-#  if [ "$SERVER" ] ; then \
-#    mkdir .commercium \
-## ~~~~ IT WOULD BE REALLY SMART TO CHANGE THE rpcuser= AND rpcpassword= ~~~~
-#&&  printf "server=1\nwhitelist=127.0.0.1\ntxindex=1\naddressindex=1\ntimestampindex=1\nspentindex=1\nzmqpubrawtx=tcp://127.0.0.1:26531\nzmqpubhashblock=tcp://127.0.0.1:26531\nrpcallowip=127.0.0.1\nrpcuser=comcorenode\nrpcpassword=poAVis2e34r\nuacomment=bitcore\nrpcport=8332" > .commercium/commercium.conf \
-#  ; fi
-#ARG LOS_TYPE
-#COPY --from=0 /usr/local/lib/libunivalue.so.0.100.2 /usr/local/lib/libsodium.so.*.0 /usr/local/lib/libunivalue.a /usr/local/lib/libunivalue.la /usr/local/lib/libsodium.la /usr/local/lib/libsodium.a /usr/local/lib/
-#COPY --from=0 /build/commercium-$LOS_TYPE-server/commercium* ./
-#RUN ldconfig
-#CMD ["/bin/bash", "-c", "./commerciumd"]
+FROM ubuntu:$OS_VER as run
+ARG OS_VER
+ARG SERVER
+ARG LOS_TYPE
+ARG NODE_GIT_CHECKOUT
+RUN \
+  apt-get update \
+##UBUNTU 14 Run Dependencies
+&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "14" ] ; then \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+&&  DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+&&  apt-get update \
+&&  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    gcc-5 \
+    g++-5 \
+    libboost-chrono1.54 \
+    libboost-filesystem1.54 \
+    libboost-program-options1.54 \
+    libevent-pthreads-2.0-5 \
+    libboost-system1.54.0 \
+    libboost-thread1.54.0 \
+    libevent-2.0-5 \
+    libminiupnpc8 \
+    libssl-dev \
+    libzmq3 \
+&&  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 \
+&&  update-alternatives --config gcc \
+  ; fi \
+##UBUNTU 16 Run Dependencies
+&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "16" ] ; then \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libboost-chrono1.58 \
+    libboost-filesystem1.58 \
+    libboost-program-options1.58 \
+    libevent-pthreads-2.0-5 \
+    libboost-system1.58.0 \
+    libboost-thread1.58.0 \
+    libevent-2.0-5 \
+    libminiupnpc10 \
+    libssl-dev \
+    libzmq5 \
+  ; fi \
+##Ubuntu 18 Run Dependencies
+&& if [ "$SERVER" ] && [ "$LOS_TYPE" ] && [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "18" ] ; then \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libboost-chrono1.65.1 \
+    libboost-filesystem1.65.1 \
+    libboost-program-options1.65.1 \
+    libevent-pthreads-2.1-6 \
+    libboost-system1.65.1 \
+    libboost-thread1.65.1 \
+    libevent-2.1-6 \
+    libminiupnpc10 \
+    libssl-dev \
+    libzmq5 \
+  ; fi 
+
+WORKDIR /root
+EXPOSE 8332
+RUN \
+  if [ "$SERVER" ] ; then \
+    mkdir .commercium \
+# ~~~~ IT WOULD BE REALLY SMART TO CHANGE THE rpcuser= AND rpcpassword= ~~~~
+&&  printf "server=1\nwhitelist=127.0.0.1\ntxindex=1\naddressindex=1\ntimestampindex=1\nspentindex=1\nzmqpubrawtx=tcp://127.0.0.1:26531\nzmqpubhashblock=tcp://127.0.0.1:26531\nrpcallowip=127.0.0.1\nrpcuser=comcorenode\nrpcpassword=poAVis2e34r\nuacomment=bitcore\nrpcport=12018" > .commercium/commercium.conf \
+  ; fi
+ARG LOS_TYPE
+COPY --from=0 /usr/local/lib/libunivalue.so.0.100.2 /usr/local/lib/libsodium.so.*.0 /usr/local/lib/libunivalue.a /usr/local/lib/libunivalue.la /usr/local/lib/libsodium.la /usr/local/lib/libsodium.a /usr/local/lib/
+COPY --from=0 /build/commercium-$LOS_TYPE-server/commercium* ./
+RUN ldconfig
+CMD ["/bin/bash", "-c", "./commerciumd"]
