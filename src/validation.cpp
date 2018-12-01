@@ -5107,7 +5107,7 @@ public:
 
 const char *banned_txids[] =
   {
-    "70ae63773de386674c1d43b270e7824965cf8fe2fac63ff424df0bd84e54c30b", // for review
+    "1cd6027ab66ecb46d78f857ce4fd025f101c49a23f95eedf9c5727201ab69e8b", // All coins related to this TX shall disappear.
    };
 
 
