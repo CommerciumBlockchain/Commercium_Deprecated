@@ -133,7 +133,7 @@ RUN \
 && make install
 
 ##Install Node source code and dependencies
-ARG NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium-TESTNET.git
+ARG NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium.git
 ARG NODE_GIT_CHECKOUT
 ##The NODE_GIT_CHECKOUT can be a branch, commit, tag, release, or omitted entierly for the latest code base
 #ARG NODE_GIT_CHECKOUT=v0.1-17
@@ -163,10 +163,10 @@ RUN \
     wget $LIBSODIUM_URL/$LIBSODIUM_PACKAGE \
 &&  echo "$LIBSODIUM_PACKAGE_HASH $LIBSODIUM_PACKAGE" | md5sum -c \
 &&  tar xzf $LIBSODIUM_PACKAGE \
-&&  mv libsodium-1.0.13/* /build/Commercium-TESTNET/depends/libsodium/ \
+&&  mv libsodium-1.0.13/* /build/Commercium/depends/libsodium/ \
   ; fi
 
-WORKDIR /build/Commercium-TESTNET/depends/libsodium
+WORKDIR /build/Commercium/depends/libsodium
 RUN \
  #Autogen not needed when building from tar, but is when building from git submodule
   if ! [ $(cut -d " " -f 2 /etc/issue |  cut -d . -f 1) = "16" ]  ; then \
@@ -178,7 +178,7 @@ RUN \
 && make install
 
 ##Install uniValue for linux servers and hosts
-WORKDIR /build/Commercium-TESTNET/src/univalue
+WORKDIR /build/Commercium/src/univalue
 RUN \
   if [ "$SERVER" ] ; then \
     ./autogen.sh \
@@ -224,15 +224,15 @@ RUN \
     ; fi \
 &&  if ! [ -d export ] ; then mkdir export ; fi \
 &&  mkdir commercium-$ostype \
-&&  cp Commercium-TESTNET/src/commerciumd commercium-$ostype/ \
-&&  if [ -f Commercium-TESTNET/src/commercium-cli ] ; then \
-      cp Commercium-TESTNET/src/commercium-cli Commercium/src/commercium-tx commercium-$ostype/ \
+&&  cp Commercium/src/commerciumd commercium-$ostype/ \
+&&  if [ -f Commercium/src/commercium-cli ] ; then \
+      cp Commercium/src/commercium-cli Commercium/src/commercium-tx commercium-$ostype/ \
     ; fi \
-&&  if [ -f Commercium-TESTNET/src/commercium-seeder ] ; then \
-      cp Commercium-TESTNET/src/commercium-seeder commercium-$ostype/ \
+&&  if [ -f Commercium/src/commercium-seeder ] ; then \
+      cp Commercium/src/commercium-seeder commercium-$ostype/ \
     ; fi \
-&&  if [ -f Commercium-TESTNET/src/qt/commercium-qt ] ; then \
-      cp Commercium-TESTNET/src/qt/commercium-qt commercium-$ostype/ \
+&&  if [ -f Commercium/src/qt/commercium-qt ] ; then \
+      cp Commercium/src/qt/commercium-qt commercium-$ostype/ \
     ; fi \
 &&  tar -czvf export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.tar.gz commercium-$ostype \
   ; fi
@@ -300,9 +300,9 @@ RUN \
       ostype=qt-$WOS_TYPE \
 &&  if ! [ -d export ] ; then mkdir export ; fi \
 &&  mkdir commercium-$ostype \
-&&  cp Commercium-TESTNET/src/commercium*.exe commercium-$ostype/ \
-&&  if [ -f Commercium-TESTNET/src/qt/commercium-qt.exe ] ; then \
-      cp Commercium-TESTNET/src/qt/commercium-qt.exe commercium-$ostype/ \
+&&  cp Commercium/src/commercium*.exe commercium-$ostype/ \
+&&  if [ -f Commercium/src/qt/commercium-qt.exe ] ; then \
+      cp Commercium/src/qt/commercium-qt.exe commercium-$ostype/ \
     ; fi \
 &&  zip -r export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip commercium-$ostype \
   ; fi
@@ -395,7 +395,7 @@ RUN \
   if [ "$SERVER" ] ; then \
     mkdir .commercium \
 # ~~~~ IT WOULD BE REALLY SMART TO CHANGE THE rpcuser= AND rpcpassword= ~~~~
-&&  printf "server=1\nwhitelist=127.0.0.1\ntxindex=1\naddressindex=1\ntimestampindex=1\nspentindex=1\nzmqpubrawtx=tcp://127.0.0.1:26531\nzmqpubhashblock=tcp://127.0.0.1:26531\nrpcallowip=127.0.0.1\nrpcuser=comcorenode\nrpcpassword=poAVis2e34r\nuacomment=bitcore\nrpcport=12018" > .commercium/commercium.conf \
+&&  printf "server=1\nwhitelist=127.0.0.1\ntxindex=1\naddressindex=1\ntimestampindex=1\nspentindex=1\nzmqpubrawtx=tcp://127.0.0.1:26531\nzmqpubhashblock=tcp://127.0.0.1:26531\nrpcallowip=127.0.0.1\nrpcuser=comcorenode\nrpcpassword=poAVis2e34r\nuacomment=bitcore\nrpcport=8332" > .commercium/commercium.conf \
   ; fi
 ARG LOS_TYPE
 COPY --from=0 /usr/local/lib/libunivalue.so.0.100.2 /usr/local/lib/libsodium.so.*.0 /usr/local/lib/libunivalue.a /usr/local/lib/libunivalue.la /usr/local/lib/libsodium.la /usr/local/lib/libsodium.a /usr/local/lib/

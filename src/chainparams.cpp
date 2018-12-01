@@ -224,11 +224,11 @@ public:
 
 
         vSeeds.push_back(
-            CDNSSeedData("commercium.net", "seed1.testnet.commercium.net", true));
+            CDNSSeedData("commercium.net", "seed1.commercium.net", true));
         vSeeds.push_back(
-            CDNSSeedData("commercium.net", "seed2.testnet.commercium.net", true));
+            CDNSSeedData("commercium.net", "seed2.commercium.net", true));
         vSeeds.push_back(
-            CDNSSeedData("miningspeed.com", "seed3.testnet.commercium.net", true));
+            CDNSSeedData("miningspeed.com", "comseeder.miningspeed.com", true));
 
 		// play on Bitcoin Testnet params for compatibility
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 111);
@@ -240,7 +240,7 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(
             pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
-        fMiningRequiresPeers = false;
+        fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
