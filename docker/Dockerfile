@@ -1,7 +1,4 @@
 # Dockerfile for building Commercium linux and windows nodes
-# Developers add the docker-compose.yml file and run 'docker-compose up' to build several binaries
-# Users can use build arguments from command line for one off builds, 
-# Use 'docker build --build-args WOS_TYPE=win64 .' to build a binary just for windows 64 GUI.
 # You can stack args in the build command, valid arguments for --build-args OS_VER=[14.04-18.10], LOS_TYPE=(not blank), WOS_TYPE=[win32,win64], NODE_GIT_CHECKOUT=(branch, commit, or tag),and SERVER=(not blank)
 # We need to declare these values outside and inside the container
 ARG OS_VER=18.04
@@ -13,14 +10,16 @@ ARG SERVER
 #FROM ubuntu:16.04
 FROM ubuntu:$OS_VER as build
 
+ARG OS_VER
 ARG LOS_TYPE
 ARG WOS_TYPE
 ARG SERVER
+ENV EXPORT=${EXTRACT}
 
-##~~~~~MAIN CONFIGURATION SETTINGS~~~~~
+##~~~~~MAIN CONFIGURATION SETTINGS set in docker-compose.yml or with --build-args~~~~~
 
 ## you can build one or both os's at one go. For WOS_TYPE choose win32 or win64
-#ARG LOS_TYPE=linux64
+#ARG LOS_TYPE=linux
 #ARG WOS_TYPE=win64
 #ARG WOS_TYPE=win32
 
@@ -28,7 +27,8 @@ ARG SERVER
 ## Windows does not build with server options
 #ARG SERVER=1
 
-#Optional you can specify the code branch with --build-arg NODE_GIT_CHECKOUT=v0-1.17
+#Optional you can specify the code branch with --build-arg NODE_GIT_CHECKOUT=v0-1.17 or setting it here
+#ARG NODE_GIT_CHECKOUT=v0.1-17
 ##~~~~~END MOST USE CASE CONFIGURATIONS, EDIT BELOW IF YOU HAVE AN UNUSAL SETUP~~~~~
 LABEL maintainer="Commercium Dev Team <info@commercium.net>" \
 description="Binary wallet builder for linux or windows commercium nodes. \
@@ -109,7 +109,7 @@ RUN \
 &&  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 \
 &&  update-alternatives --config gcc \
   ; fi \
-&& mkdir /build
+&& mkdir /build /host
 
 ##use more cores to build faster, hopefully without running out of VirtualMemory
 ARG MAKEFLAGS="-j$(nproc)"
@@ -241,10 +241,10 @@ RUN \
 ##use fewer cores for building the node to prevent errors
 ARG MAKEFLAGS=-j1
 
-#~~~~~ START WIN64 ~~~~~
+#~~~~~ START WIN ~~~~~
 WORKDIR /build/Commercium
 RUN \
-  if [ "$WOS_TYPE" = "win64" ] ; then \
+  if [ "$WOS_TYPE" ] ; then \
 #Lets only clean if we need to
     if [ "$LOS_TYPE" ] ; then \
       make clean \
@@ -252,47 +252,21 @@ RUN \
 #Windows requires some code changes to this file
 &&  sed -e 's/soln.size(), SolutionWidth);/\/\/soln.size(), SolutionWidth);/' -e '/\else$/,/LogPrint/c\ \ \ \ \ \ \ \ }' -e 's/LogPrint/\/\/LogPrint/g' -e 's/crypto\/equihash.h"/crypto\/equihash.h"\n#include "compat\/endian.h"/' -i src/crypto/equihash.cpp \
 &&  cd depends \
-&&  make HOST=x86_64-w64-mingw32 \
+&&  make if [ "$WOS_TYPE" = "win64" ];then HOST=x86_64-w64-mingw32 ;else HOST=i686-w64-mingw32 ;fi \
   ; fi
 
 RUN \
-  if [ "$WOS_TYPE" = "win64" ] ; then \
+  if [ "$WOS_TYPE" ] ; then \
     ./autogen.sh \
-&&  if [ "$SERVER" ] ; then sed '/ac_cv_lib_univalue_main=/s/no/yes/' -i configure ; fi \
 &&  CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --disable-bench --disable-tests --disable-shared --with-seeder=no --prefix=/ \
   ; fi
 
 RUN \
-  if [ "$WOS_TYPE" = "win64" ] ; then \
+  if [ "$WOS_TYPE" ] ; then \
   make CXXFLAGS="-W --param ggc-min-expand=1 --param ggc-min-heapsize=32768" \
 &&  make check \
   ; fi 
-#~~~~~ END WIN64 ~~~~~ LDFLAGS=-no-undefined
-#~~~~~ START WIN32 ~~~~~
-RUN \
-  if [ "$WOS_TYPE" = "win32" ] ; then \
-#Lets only clean if we need to
-    if [ "$LOS_TYPE" ] ; then \
-      make clean \
-    ; fi \
-#Windows requires some code changes to this file
-&&  sed -e 's/soln.size(), SolutionWidth);/\/\/soln.size(), SolutionWidth);/' -e '/\else$/,/LogPrint/c\ \ \ \ \ \ \ \ }' -e 's/LogPrint/\/\/LogPrint/g' -e 's/crypto\/equihash.h"/crypto\/equihash.h"\n#include "compat\/endian.h"/' -i src/crypto/equihash.cpp \
-&&  cd depends \
-&&  make HOST=i686-w64-mingw32 \
-  ; fi
-
-RUN \
-  if [ "$WOS_TYPE" = "win32" ] ; then \
-    ./autogen.sh \
-&&  CONFIG_SITE=$PWD/depends/i686-w64-mingw32/share/config.site ./configure --build=x86_64 --disable-bench --disable-tests --disable-shared --with-seeder=no --prefix=/ \
-  ; fi
-
-RUN \
-  if [ "$WOS_TYPE" = "win32" ] ; then \
-    make CXXFLAGS="-Wa,-mbig-obj --param ggc-min-expand=1 --param ggc-min-heapsize=32768" \
-&&  make check \
-  ; fi
-#~~~~~ END WIN32 ~~~~~
+#~~~~~ END WIN ~~~~~
 #Prepare Windows files for export
 WORKDIR /build
 RUN \
@@ -307,30 +281,32 @@ RUN \
 &&  zip -r export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip commercium-$ostype \
   ; fi
 #~~~~~ End Windows ~~~~~
-#~~~~~ Export the compressed program ~~~~~
-#VOLUME /build/export
 
 RUN \
   if [ "$SERVER" ] && [ "$LOS_TYPE" ] ; then \
-    ostype=$LOS_TYPE-server \
+    ostype=$LOS_TYPE \
   ; else \
     ostype=qt-$LOS_TYPE \
   ; fi \
-&& if [ -f /build/export/commercium-$NODE_GIT_CHECKOUT-$ostype.tar.gz ] ; then \
-    echo "Now run 'docker cp docker-cmm:/build/export/commercium-$NODE_GIT_CHECKOUT-$ostype.tar.gz .' to save the Linux files you compiled." \
+&& if [ -f /build/export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.tar.gz ] ; then \
+    echo "Now run 'docker cp docker-cmm:/build/export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.tar.gz .' to save the Linux files you compiled." \
   ; fi \
 && if [ "$SERVER" ] && [ "$WOS_TYPE" ] ; then \
-    ostype=$WOS_TYPE-server \
+    ostype=$WOS_TYPE \
   ; else \
     ostype=qt-$WOS_TYPE \
   ; fi \
-&& if [ -f /build/export/commercium-$NODE_GIT_CHECKOUT-$ostype.zip ] ; then \
-    echo "Now run 'docker cp docker-cmm:/build/export/commercium-$NODE_GIT_CHECKOUT-$ostype.zip .' to save the Windows files you compiled." \
+&& if [ -f /build/export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip ] ; then \
+    echo "Now run 'docker cp docker-cmm:/build/export/commercium-$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip .' to save the Windows files you compiled." \
   ; fi 
-##~~~~~ TODO add volume and auto copy image off docker ~~~~
-## Run the linux node in docker if you want. The blockchain will use an additional 5gigs of drive space.
-## Uncomment this whole section and start with 'docker build --build-arg LOS_TYPE=linux64 --build-arg SERVER=1 --tag cmm-server .'
-## This part still needs some work.
+
+#If you forgot the export flag you can set it here without needing to rebuild everything
+#ENV EXPORT 1
+CMD ["bash", "-c", "if [ $EXPORT ];then cp /build/export/* /host/;fi"]
+
+## You can run the linux node in docker if you want. Does not work with windows.
+## The blockchain will use an additional 5gigs of drive space.
+## To do so uncomment the whole next section and follow the instructions in doc/build-docker.md.
 
 #FROM ubuntu:$OS_VER as run
 #ARG OS_VER

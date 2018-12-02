@@ -1,44 +1,61 @@
 version: '2.0'
 # Comment out sections you dont want and build with `docker-compose up`
-# then for each image run 'docker cp image:/build/export/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip .'
+# then for each image run 'docker cp image:/host/commercium$NODE_GIT_CHECKOUT-$ostype$OS_VER.zip .'
 # Clean up the system with 'docker-compose down --rmi all'
 services:
-  linux-win18:
-    image: ubuntu-win18-qt
+  ubuntu18-win:
+    image: ubuntu18-win-qt
     volumes:
-        - ./:/build/export
+# Instruct docker where to save build files (in the same directory)
+      - ./:/host
+    environment:
+# Instruct docker to save the file to the host
+      - EXPORT=1
     build:
       context: .
       args:
         - OS_VER=18.04
         - LOS_TYPE=linux64
+# You can build linux and windows images from this container
         - WOS_TYPE=win64
-#      - NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium.git
-  linux-win18-server:
+# You can change the git repository
+#        - NODE_GIT_URL=https://github.com/CommerciumBlockchain/Commercium.git
+# You can also set a specific branch, commit, tag, or release
+#        - NODE_GIT_CHCKOUT=v0.1-17
+  ubuntu18-win-node:
     image: ubuntu18-win-server
     volumes:
-        - ./:/build/export
+      - ./:/host
+# If running the node then lets save your wallet and the chain
+      - ./wallet:/root/.commercium
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
         - OS_VER=18.04
         - LOS_TYPE=linux64
+# Windows does not like building with server options so they were removed and this is pointless to try
 #        - WOS_TYPE=win64
         - SERVER="yes"
-#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
-  linux16:
+  ubuntu16:
     image: ubuntu16-qt
     volumes:
-        - ./:/build/export
+      - ./:/host
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
         - OS_VER=16.04
         - LOS_TYPE=linux64
-  linux16-server:
+  ubuntu16-node:
     image: ubuntu16-server
     volumes:
-        - ./:/build/export
+      - ./:/host
+      - ./wallet:/root/.commercium
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
@@ -46,30 +63,37 @@ services:
         - LOS_TYPE=linux64
         - SERVER="yes"
         - NODE_GIT_CHECKOUT="0.17.0-bitcore"
-  linux14:
+  ubuntu14:
     image: ubuntu14-qt
     volumes:
-        - ./:/build/export
+      - ./:/host
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
         - OS_VER=14.04
         - LOS_TYPE=linux64
-  linux14-server:
+  ubuntu14-node:
     image: ubuntu14-server
     volumes:
-        - ./:/build/export
+      - ./:/host
+      - ./wallet:/root/.commercium
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
         - OS_VER=14.04
         - LOS_TYPE=linux64
         - SERVER="yes"
-#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
-#  win64-qt:
+# Built from above with linux but here for notation
+# #  win64-qt:
 #    image: win64-qt
 #    volumes:
-#        - ./:/build/export
+#      - ./:/host
+#    environment:
+#      - EXPORT=1
 #    build:
 #      context: .
 #      args:
@@ -78,18 +102,21 @@ services:
 #  win64-server:
 #    image: win64-server
 #    volumes:
-#        - ./:/build/export
+#      - ./:/host
+#    environment:
+#      - EXPORT=1
 #    build:
 #      context: .
 #      args:
 #        - OS_VER=18.04
 #        - WOS_TYPE=win64
 #        - SERVER=1
-#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
   win32-qt:
     image: win32-qt
     volumes:
-        - ./:/build/export
+      - ./:/host
+    environment:
+      - EXPORT=1
     build:
       context: .
       args:
@@ -98,11 +125,12 @@ services:
 #  win32-server:
 #    image: win32-server
 #    volumes:
-#        - ./:/build/export
+#      - ./:/host
+#    environment:
+#      - EXPORT=1
 #    build:
 #      context: .
 #      args:
 #        - OS_VER=18.04
 #        - WOS_TYPE=win32
 #        - SERVER=1
-#        - NODE_GIT_CHECKOUT="0.17.0-bitcore"
