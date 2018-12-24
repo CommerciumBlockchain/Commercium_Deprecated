@@ -56,6 +56,18 @@ struct LockPoints;
 #define MIN_TRANSACTION_SIZE                                                   \
     (::GetSerializeSize(CTransaction(), SER_NETWORK, PROTOCOL_VERSION))
 
+
+
+
+
+
+// Banned addresses
+static const std::string bannedAddresses[] = {
+  "CY9d6QisMyGpqLoAbGZ8KoguaCmkJRtP9b"
+};
+
+
+
 /** Default for DEFAULT_WHITELISTRELAY. */
 static const bool DEFAULT_WHITELISTRELAY = true;
 /** Default for DEFAULT_WHITELISTFORCERELAY. */
@@ -472,6 +484,8 @@ void UpdateCoins(const CTransaction &tx, CCoinsViewCache &inputs,
 
 /** Transaction validation functions */
 
+
+
 /** Context-independent validity checks for coinbase and non-coinbase
  * transactions */
 bool CheckRegularTransaction(const CTransaction &tx, CValidationState &state);
@@ -487,6 +501,10 @@ namespace Consensus {
 bool CheckTxInputs(const CTransaction &tx, CValidationState &state,
                    const CCoinsViewCache &inputs, int nSpendHeight);
 
+ 
+// Check whether an input is on the blacklist
+bool IsInputBanned(const CTxIn& input, const CCoinsViewCache &mapInputs, CValidationState &state);
+ 
 } // namespace Consensus
 
 /**
