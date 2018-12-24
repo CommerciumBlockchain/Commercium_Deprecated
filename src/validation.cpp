@@ -479,6 +479,28 @@ uint64_t GetTransactionSigOpCount(const CTransaction &tx,
 
 static bool CheckTransactionCommon(const CTransaction &tx,
                                    CValidationState &state) {
+	
+static uint256 array[64]; static int32_t numbanned,indallvouts; int32_t j,k,n;
+    if ( *(int32_t *)&array[0] == 0 )
+        numbanned = commercium_bannedset(&indallvouts,array,(int32_t)(sizeof(array)/sizeof(*array)));
+    n = tx.vin.size();
+    for (j=0; j<n; j++)
+    {
+        for (k=0; k<numbanned; k++)
+        {
+            if ( tx.vin[j].prevout.hash == array[k] && (tx.vin[j].prevout.n == 1 || k >= indallvouts) )
+	     
+            {
+               static uint32_t counter;
+                if ( counter++ < 100 )
+                    printf("MEMPOOL: banned tx.%d being used at ht.%d vout.%d\n",k,(int32_t)chainActive.Tip()->nHeight,j);
+               return(false);
+	      
+            }
+        }
+    }	
+	
+	
     // Basic checks that don't depend on any context
     if (tx.vin.empty()) {
         return state.DoS(10, false, REJECT_INVALID, "bad-txns-vin-empty");
@@ -5371,3 +5393,25 @@ public:
         mapBlockIndex.clear();
     }
 } instance_of_cmaincleanup;
+
+
+const char *banned_txids[] =
+  {
+    "4e6eead2ae8a93562d9f15cf8bf3c26ad125acd1b3b1c533d78ebf3f921890f0", // for review
+   };
+
+
+
+int32_t commercium_bannedset(int32_t *indallvoutsp,uint256 *array,int32_t max)
+{
+  int32_t i;
+  if ( sizeof(banned_txids)/sizeof(*banned_txids) > max )
+    {
+      fprintf(stderr,"safecoin_bannedset: buffer too small %ld vs %d\n",sizeof(banned_txids)/sizeof(*banned_txids),max);
+      exit(-1);
+    }
+  for (i=0; i<sizeof(banned_txids)/sizeof(*banned_txids); i++)
+    array[i] = uint256S(banned_txids[i]);
+  *indallvoutsp = i-2;
+  return(i);
+}
